@@ -1,0 +1,42 @@
+{%load bootstrap_icons%}
+<nav class="navbar navbar-expand bg-primary pe-2">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center">
+      <a
+        class="btn btn-primary me-3"
+        data-bs-toggle="offcanvas"
+        href="#offcanvasExample"
+        role="button"
+        aria-controls="offcanvasExample"
+      >
+        {% bs_icon 'list' size='1.75em' %}
+      </a>
+      <a href="#" class="navbar-brand">
+        <h4 class="fw-semibold text-light mb-0">Araranguá</h4>
+      </a>
+    </div>
+  </div>
+  <div class="d-flex align-items-center">
+    <a
+      style="width: 125px"
+      href="{% url 'account_login' %}"
+      role="button"
+      class="fs-6 btn btn-light me-4"
+    >
+      Acessar conta
+    </a>
+    <span
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+      style="cursor: pointer"
+      class="position-relative"
+    >
+      <span class="">{% bs_icon 'bell' size='1.5em' color='#fff' %}</span>
+      <span
+        class="position-absolute top-0 start-0 translate-middle badge rounded-circle bg-danger"
+      >
+        1
+      </span>
+    </span>
+  </div>
+</nav>

@@ -1,0 +1,42 @@
+{%load bootstrap_icons%}
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1
+          class="d-flex align-items-center modal-title fs-5"
+          id="exampleModalLabel"
+        >
+          <span class="me-3">
+            {% bs_icon 'exclamation-triangle' size='1.5em' color='red' %} </span
+          >Alertas
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body d-flex flex-column">
+        <ul class="list-group">
+          <li class="list-group-item">A umidade está acima do limite.</li>
+          <li class="list-group-item">
+            A porcentagem de chuva está abaixo do normal.
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

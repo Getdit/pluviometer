@@ -1,0 +1,96 @@
+{% extends "main.html" %} {% block content %}{%load bootstrap_icons%}
+<div class="d-flex flex-column align-items-center px-4 mt-5">
+  <div class="mb-1 w-100 d-flex align-items-center justify-content-between">
+    <h2 class="fs-4 fw-semibold mb-0">Relatórios</h2>
+    <button
+      type="button"
+      data-bs-toggle="modal"
+      data-bs-target="#reportModal"
+      class="mt-sm-0 btn btn-dark d-flex align-items-center"
+    >
+      {% bs_icon 'plus' size='1.2em' %}<span class="ps-1">Novo relatório</span>
+    </button>
+  </div>
+
+  <div
+    class="modal fade"
+    id="reportModal"
+    tabindex="-1"
+    aria-labelledby="reportModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="reportModalLabel">
+            Criando relatório
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form class="w-100">
+            <div class="mb-3">
+              <label for="sensor_name" class="form-label">Nome do sensor</label>
+              <select class="form-select" aria-label="sensor_name">
+                <option selected>Selecione um sensor</option>
+                <option value="1">Temperatura-01</option>
+                <option value="2">Pluviosidade-03</option>
+                <option value="3">Umidade-10</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="inicial_date" class="form-label">Data inicial</label>
+              <input
+                type="date"
+                class="form-control"
+                id="inicial_date"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="end_date" class="form-label">Data final</label>
+              <input type="date" class="form-control" id="end_date" required />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Fechar
+          </button>
+          <button type="button" class="btn btn-primary">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% for data in datas %}
+  <div class="mt-4 w-100 d-flex flex-colum justify-content-center">
+    <div
+      class="d-flex flex-column flex-sm-row w-100 align-items-start justify-content-between border rounded py-4 px-4"
+    >
+      <div class="d-flex flex-column pe-3">
+        <h3 class="fs-5 fw-semibold">Relatório da Temperatura de Araranguá</h3>
+        <span class="fs-7">Relatório de 21/03/2023 até 21/03/2023</span>
+      </div>
+      <button
+        type="button"
+        class="mt-sm-0 mt-4 btn btn-primary d-flex align-items-center"
+      >
+        {% bs_icon 'download' size='1.2em' %}<span class="ps-1"
+          >Baixar Relatório</span
+        >
+      </button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock content %}

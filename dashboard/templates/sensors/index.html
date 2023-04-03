@@ -1,0 +1,81 @@
+{% extends "main.html" %} {% block content %}
+<section class="pe-4 ps-4">
+  <div class="d-flex">
+    <form class="w-100 mt-4">
+      <div class="mb-3">
+        <label for="sensor_name" class="form-label">Nome do sensor</label>
+        <input
+          type="text"
+          class="form-control"
+          id="sensor_name"
+          placeholder="eg: temperatura-1"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="sensor_location" class="form-label">Local do sensor</label>
+        <input
+          type="text"
+          class="form-control"
+          id="sensor_location"
+          required
+          placeholder="eg: Araranguá"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="alert_value" class="form-label">Valor de alerta</label>
+        <input
+          type="text"
+          class="form-control"
+          id="alert_value"
+          required
+          placeholder="eg: 23%"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Criar novo</button>
+    </form>
+  </div>
+  <div class="d-flex flex-column align-items-center">
+    <div class="w-100">
+      <form class="mt-4">
+        <div class="mb-3">
+          <label for="search" class="form-label invisible">Pesquisar</label>
+          <input
+            style="width: 280px"
+            type="text"
+            class="form-control"
+            id="search"
+            placeholder="Eg: Sombrio, temperatura-1"
+          />
+        </div>
+      </form>
+    </div>
+    <div
+      class="w-100 d-flex flex-column flex-sm-row align-items-center justify-content-between border rounded px-3 py-3"
+    >
+      <div class="d-flex flex-column">
+        <p class="fs-5 fw-semibold">temperatura-1</p>
+        <span>Araranguá - SC</span>
+        <span>-23.32413 | 13.13233</span>
+        <button type="submit" class="btn btn-primary mt-3">Abrir mapa</button>
+      </div>
+      <div class="d-flex flex-column mt-sm-0 mt-3">
+        <div class="d-flex flex-column">
+          <span class="fs-6 fw-semibold me-2">Atual:</span>
+          <span
+            class="text-center rounded bg-warning fs-6 fw-semibold text-light px-2 py-1"
+            >45%</span
+          >
+        </div>
+        <div class="d-flex flex-column mt-2">
+          <span class="fs-6 fw-semibold me-2">Nivel de alerta:</span>
+          <span
+            class="text-center rounded bg-danger fs-6 fw-semibold text-light px-2 py-1"
+            >65%</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
