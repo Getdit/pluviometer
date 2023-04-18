@@ -10,4 +10,5 @@ urlpatterns = [
     path('reports/', ReportsView.as_view(), name='reports'),
     path('sensors/', SensorsView.as_view(), name='sensors'),
     path('chart/', ChartView.as_view(), name='chart'),
+    path('chart-data/', ChartView.teste(), name='chart-data'),
 ]
