@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <title>map</title>
+
+    <style>
+        #map { 
+            height: 550px;
+            width: 850px;
+         }
+    </style>
+</head>
+<body>
+    <h1>MAPA</h1>
+
+    <div id="map"></div>
+
+    <script>
+        const latitude = -28.951179;
+        const longitude = -49.467383;
+        const zoom = 13;
+
+      var map = L.map('map').setView([latitude, longitude], zoom);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         maxZoom: 19,
+      }).addTo(map);
+
+      var marker = L.marker([latitude, longitude]).addTo(map);
+      marker.bindPopup("Opha!! Clima favorável por aqui na UFSC").openPopup();
+    </script>
+</body>
+</html>
