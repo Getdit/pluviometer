@@ -24,6 +24,17 @@
         const latitude = -28.951179;
         const longitude = -49.467383;
         const zoom = 13;
+        const mapContainer = document.querySelector("#map");
+
+        mapContainer.addEventListener('click',()=> {
+           alert("teste")
+        })
+
+        mapContainer.style.width = "100%"
+        mapContainer.style.border = "none"
+
+      
+
 
       var map = L.map('map').setView([latitude, longitude], zoom);
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
