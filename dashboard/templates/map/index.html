@@ -1,0 +1,24 @@
+{% extends "main.html" %} {% block content %}
+  <section>
+    <div id="map"></div>
+    <script>
+        const latitude = -28.951179;
+        const longitude = -49.467383;
+        const zoom = 13;
+        const mapContainer = document.querySelector("#map");
+        mapContainer.style.width = "100%"
+        mapContainer.style.height = "500px"
+        mapContainer.style.border = "none"
+      
+
+      var map = L.map('map').setView([latitude, longitude], zoom);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         maxZoom: 19,
+      }).addTo(map);
+
+      var marker = L.marker([latitude, longitude]).addTo(map);
+      marker.bindPopup("Opha!! Clima favorável por aqui na UFSC").openPopup();
+    </script>
+  </section>
+{% endblock content %}
+
