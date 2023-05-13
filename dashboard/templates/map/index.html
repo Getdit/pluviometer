@@ -1,24 +1,42 @@
 {% extends "main.html" %} {% block content %}
-  <section>
-    <div id="map"></div>
-    <script>
-        const latitude = -28.951179;
-        const longitude = -49.467383;
-        const zoom = 13;
-        const mapContainer = document.querySelector("#map");
-        mapContainer.style.width = "100%"
-        mapContainer.style.height = "500px"
-        mapContainer.style.border = "none"
-      
+    <section>
+        <div id="map"></div>
+        <script>
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    alert("GeoLocalização não foi possivel");
+                }
+            }
 
-      var map = L.map('map').setView([latitude, longitude], zoom);
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-         maxZoom: 19,
-      }).addTo(map);
+            function showPosition(position) {
+                latitude = position.coords.latitude;
+                longitude = position.coords.longitude;
+            }
 
-      var marker = L.marker([latitude, longitude]).addTo(map);
-      marker.bindPopup("Opha!! Clima favorável por aqui na UFSC").openPopup();
-    </script>
-  </section>
+            var latitude = -28.951179;
+            var longitude = -49.467383;
+
+            getLocation();
+
+            const zoom = 13;
+            const mapContainer = document.querySelector("#map");
+            mapContainer.style.width = "100%"
+            mapContainer.style.height = "500px"
+            mapContainer.style.border = "none"
+
+
+            var map = L.map('map').setView([latitude, longitude], zoom);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+
+            {% for local in locations %}
+            var marker_{{ local.id }} = L.marker([{{ local.get_lat_str }}, {{ local.get_lon_str }}]).addTo(map);
+            marker_{{ local.id }}.bindPopup("{{ local.description }}").openPopup();
+            {% endfor %}
+        </script>
+    </section>
 {% endblock content %}
 

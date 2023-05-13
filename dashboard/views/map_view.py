@@ -1,11 +1,11 @@
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.views import View
-from django import forms
+from django.views.generic import TemplateView
 
-class MapView(View):
+from core.models import Location
+
+class MapView(TemplateView):
     template_name = 'map/index.html'
 
-    def get(self, request):
-        return render(request, self.template_name)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["locations"] = Location.objects.all()
+        return context

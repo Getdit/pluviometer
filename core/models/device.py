@@ -11,7 +11,7 @@ class Device(models.Model):
     latitude = models.FloatField(verbose_name="Latitude")
     longitude = models.FloatField(verbose_name="Longitude")
 
-    project = models.ForeignKey("core.Project", on_delete=models.CASCADE, verbose_name="Projeto" )
+    project = models.ForeignKey("core.Project", on_delete=models.CASCADE, verbose_name="Projeto", null=True)
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
