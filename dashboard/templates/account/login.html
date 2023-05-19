@@ -31,11 +31,11 @@
         <div
                 class="d-flex flex-column justify-content-center col-lg-5 col-md-6 col-sm-10 mx-auto"
         >
-            <p>
+            <p class="p-4">
                 Acesse a plataforma com seu usuário e senha para obter acesso a mais
                 funções da aplicação
             </p>
-            <form class="w-100 pe-4" method="POST" action="{% url 'account_login' %}">
+            <form class="w-100 p-4" method="POST" action="{% url 'account_login' %}">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="email" class="form-label">Endereço de e-mail:</label>
@@ -68,11 +68,11 @@
                         Entrar na conta
                     </button>
                     <a
-                            href="{% url 'dashboard:dashboard' %}"
+                            href="{% url 'dashboard:map' %}"
                             role="button"
                             class="ms-2 fs-6 btn btn-dark"
                     >
-                        Voltar ao dashboard
+                        Voltar
                     </a>
                 </div>
             </form>
