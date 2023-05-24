@@ -85,7 +85,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
+# WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
@@ -144,8 +144,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 # START PWA SETTINGS
-PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'pluv/static/js', 'serviceworker.js')
-
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'dashboard/static/js', 'serviceworker.js')
 
 PWA_APP_NAME = 'Pluviometer'
 PWA_APP_DESCRIPTION = "Esse aplicativo tem como função facilitar o monitoramento pluviométrico da cidade"

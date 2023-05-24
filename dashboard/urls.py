@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import DashboardView, ReportsView, SensorsView, MapView,LoginView,ProjectsView
+from dashboard.views.chart_view import ChartView
 
 app_name = "dashboard"
 
@@ -11,4 +12,5 @@ urlpatterns = [
     path('sensors/', SensorsView.as_view(), name='sensors'),
     path('map/',  MapView.as_view(), name='map'),
     path('projects/',  ProjectsView.as_view(), name='projects'),
+    path('chart/', ChartView.as_view(), name='chart'),    
 ]
