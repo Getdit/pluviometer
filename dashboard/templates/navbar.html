@@ -2,16 +2,7 @@
 <nav class="navbar navbar-expand bg-primary pe-2">
   <div class="container-fluid">
     <div class="d-flex align-items-center">
-      <a
-        class="btn btn-primary me-3"
-        data-bs-toggle="offcanvas"
-        href="#offcanvasExample"
-        role="button"
-        aria-controls="offcanvasExample"
-      >
-        {% bs_icon 'list' size='1.75em' %}
-      </a>
-      <a href="#" class="navbar-brand">
+      <a href="{% url 'dashboard:map' %}" class="navbar-brand">
         <h4 class="fw-semibold text-light mb-0">Araranguá</h4>
       </a>
     </div>
@@ -21,9 +12,17 @@
       style="width: 125px"
       href="{% url 'dashboard:account' %}"
       role="button"
-      class="fs-6 btn btn-light me-4"
+      class="fs-6 btn btn-light me-2"
     >
       Acessar conta
+    </a>
+    <a
+      style="width: 125px"
+      href="{% url 'dashboard:projects' %}"
+      role="button"
+      class="fs-6 btn btn-light me-4"
+    >
+      Projetos
     </a>
     <span
       data-bs-toggle="modal"
