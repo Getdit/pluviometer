@@ -1,108 +1,83 @@
 {% extends "main.html" %} {% block content %}{%load bootstrap_icons%}
 <section class="container-fluid ps-4 pe-4 mt-5">
-    <div class="w-50">
-        <div class="">
-          <a href="{% url 'dashboard:projects' %}" type="button" class="btn btn-link mb-4">{% bs_icon 'arrow-left' size='1.2em' %}Voltar</a>
-           <h1>Projeto 1</h1>
-           <p class="pt-3 pb-4">Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-            Architecto voluptate alias consequatur vel perspiciatis.
-            Ea quisquam labore reiciendis explicabo soluta?
-           </p>
-        </div>
-   
-        <div class="mt-5">
-           <h2 class="fs-4 pb-2">Sensores</h2>
-           <ol class="list-group list-group-numbered">
-               <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-2 me-auto">
-                  <p class="text-start mb-0">Sensor 1</p>
-                </div>
-                 
-                 <div class="">
-                   <a class="btn btn-info"  
-                      style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Mais informações</a>
-                   <button type="button"  
-                      style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" 
-                      class="btn btn-success ms-2 me-2">
-                      {% bs_icon 'pencil-square' size='1.2em' %}Editar
-                    </button>
-                   <button type="button"  
-                      style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" 
-                      class="btn btn-danger">
-                      {% bs_icon 'trash' size='1.2em' %}Deletar
-                    </button>
-                 </div>
-               </li>
+  <div class="w-50">
+    <div class="">
+      <div class="d-flex align-items-center mb-3">
+        <span class="cursor-pointer" onclick="goBack()"
+          >{% bs_icon 'arrow-left' size='1.5em' color='#000' %}</span
+        >
+        <h4 class="ms-3">Projeto 1</h4>
+      </div>
+      <p class="pt-3 pb-4">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto
+        voluptate alias consequatur vel perspiciatis. Ea quisquam labore
+        reiciendis explicabo soluta?
+      </p>
+    </div>
 
-               <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-2 me-auto">
-                  <p class="text-start mb-0">Sensor 2</p>
-                </div>
-                 
-                 <div class="">
-                   <a class="btn btn-info"  
-                      style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Mais informações</a>
-                   <button type="button"  
-                      style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" 
-                      class="btn btn-success ms-2 me-2">
-                      {% bs_icon 'pencil-square' size='1.2em' %}Editar
-                    </button>
-                   <button type="button"  
-                      style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" 
-                      class="btn btn-danger">
-                      {% bs_icon 'trash' size='1.2em' %}Deletar
-                    </button>
-                 </div>
-               </li>
-            </ol>
-        </div>
+    <div class="mt-5">
+      <div class="w-100 d-flex justify-content-between pb-2">
+        <h2 class="fs-4">Sensores</h2>
+        <a
+          class="btn btn-info"
+          href="{% url 'dashboard:project_sensors' id=1 %}"
+          style="--bs-btn-padding-x: 0.5rem; --bs-btn-font-size: 0.75rem"
+          >Ver todos</a
+        >
+      </div>
+      <ol class="list-group list-group-numbered">
+        <li
+          class="list-group-item d-flex justify-content-between align-items-start"
+        >
+          <div class="ms-2 me-auto">
+            <p class="text-start mb-0">Sensor 1</p>
+          </div>
+        </li>
 
-        <div class="mt-5">
-            <h2 class="fs-4 pb-2">Bolsistas</h2>
-            <ol class="list-group list-group-numbered">
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                 <div class="ms-2 me-auto">
-                   <p class="text-start mb-0">Jhon Doe</p>
-                 </div>
-                  
-                  <div class="">
-                    <a class="btn btn-info"  
-                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Mais informações</a>
-                    <button type="button"  
-                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" 
-                       class="btn btn-success ms-2 me-2">
-                       {% bs_icon 'pencil-square' size='1.2em' %}Editar
-                     </button>
-                    <button type="button"  
-                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" 
-                       class="btn btn-danger">
-                       {% bs_icon 'trash' size='1.2em' %}Deletar
-                     </button>
-                  </div>
-                </li>
- 
-                <li class="list-group-item d-flex justify-content-between align-items-start">
-                 <div class="ms-2 me-auto">
-                   <p class="text-start mb-0">Mary Doe</p>
-                 </div>
-                  
-                  <div class="">
-                    <a class="btn btn-info"  
-                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Mais informações</a>
-                    <button type="button"  
-                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" 
-                       class="btn btn-success ms-2 me-2">
-                       {% bs_icon 'pencil-square' size='1.2em' %}Editar
-                     </button>
-                    <button type="button"  
-                       style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" 
-                       class="btn btn-danger">
-                       {% bs_icon 'trash' size='1.2em' %}Deletar
-                     </button>
-                  </div>
-                </li>
-             </ol>
-         </div>
-       </div>
+        <li
+          class="list-group-item d-flex justify-content-between align-items-start"
+        >
+          <div class="ms-2 me-auto">
+            <p class="text-start mb-0">Sensor 2</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="mt-5">
+      <div class="w-100 d-flex justify-content-between pb-2">
+        <h2 class="fs-4">Bolsistas</h2>
+        <a
+          class="btn btn-info"
+          href="{% url 'dashboard:project_users' id=1 %}"
+          style="--bs-btn-padding-x: 0.5rem; --bs-btn-font-size: 0.75rem"
+          >Ver todos</a
+        >
+      </div>
+      <ol class="list-group list-group-numbered">
+        <li
+          class="list-group-item d-flex justify-content-between align-items-start"
+        >
+          <div class="ms-2 me-auto">
+            <p class="text-start mb-0">Jhon Doe</p>
+          </div>
+        </li>
+
+        <li
+          class="list-group-item d-flex justify-content-between align-items-start"
+        >
+          <div class="ms-2 me-auto">
+            <p class="text-start mb-0">Mary Doe</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
 </section>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
 {% endblock content %}

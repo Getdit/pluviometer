@@ -4,8 +4,9 @@ from dashboard.views.chart_view import ChartView
 from dashboard.views.project_users_view import ProjectsUsersView
 from dashboard.views.project_sensors_view import ProjectsSensorsView
 from dashboard.views.sensor_reads import SensorReadsView
+from dashboard.views.project_view import ProjectView
 
-from .views import MapView,LoginView,ProjectsView,CreateView,ProjectView
+from .views import MapView, LoginView, ProjectsView, CreateView
 
 app_name = "dashboard"
 
@@ -20,6 +21,6 @@ urlpatterns = [
          SensorReadsView.as_view(), name='sensor_reads'),
     path('projects/',  ProjectsView.as_view(), name='projects'),
     path('chart/',  ChartView.as_view(), name='chart'),
-    path('account/', CreateView.as_view(), name='account'),               
+    path('account/', CreateView.as_view(), name='account'),
     path('project/',  ProjectView.as_view(), name='project'),
 ]
