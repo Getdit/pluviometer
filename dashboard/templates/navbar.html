@@ -1,5 +1,5 @@
 {%load bootstrap_icons%}
-<nav class="navbar navbar-expand bg-primary pe-2">
+<nav class="navbar navbar-expand bg-primary pe-4 ps-4">
   <div class="container-fluid">
     <div class="d-flex align-items-center">
       <a
@@ -16,15 +16,18 @@
       </a>
     </div>
   </div>
-  <div class="d-flex align-items-center">
-    <a
-      style="width: 125px"
-      href="{% url 'dashboard:account' %}"
-      role="button"
-      class="fs-6 btn btn-light me-4"
-    >
+  <div class="dropdown d-flex align-items-center">
+    <a style="width: 125px" class="fs-6 btn btn-light me-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
       Acessar conta
     </a>
+  
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item"  href="{% url 'dashboard:login' %}">Entrar</a></li>
+      <li><a class="dropdown-item"  href="{% url 'dashboard:account' %}">Criar conta</a></li>
+    </ul>
+  </div>
+
+  <div class="d-flex align-items-center">
     <span
       data-bs-toggle="modal"
       data-bs-target="#exampleModal"
