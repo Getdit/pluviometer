@@ -48,8 +48,8 @@ class ChartView(View):
             valor_y = None
 
         # Criar uma lista de valores x e y para o gráfico
-        x_values = []
-        y_values = []
+        x_values = ["teste1", "teste2", "teste3", "teste4", "teste5", "teste6"]
+        y_values = [1,2,3,4,5,6]
         for obj in DataModel.objects.all():
             x_value = getattr(obj, valor_x) if valor_x else None
             y_value = getattr(obj, valor_y) if valor_y else None
