@@ -27,18 +27,30 @@
 
 <body>
 <div class="container-fluid">
-    <div class="row min-vh-100">
+    <div class="row min-vh-100 w-100">
         <div
-                class="d-flex flex-column justify-content-center col-lg-5 col-md-6 col-sm-10 mx-auto"
+                class="d-flex flex-column justify-content-center col-lg-5 col-md-6 col-sm-10 ms-5 ps-5 border-end"
         >
-            <p class="p-4">
-                Acesse a plataforma com seu usuário e senha para obter acesso a mais
+           <h1 class="text-center pb-2 fw-bold">Criar conta</h1>
+            <p class="ps-5">
+                Crie a sua para obter acesso a mais
                 funções da aplicação
             </p>
-            <form class="w-100 p-4" method="POST" action="{% url 'account_login' %}">
+            <form class="w-100 ps-5" method="POST" action="{% url 'account_login' %}">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label for="email" class="form-label">Endereço de e-mail:</label>
+                    <label for="name" class="form-label">Nome Completo:</label>
+                    <input
+                            type="name"
+                            name="login"
+                            class="form-control"
+                            id="name"
+                            placeholder="Seu nome"
+                            required
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail:</label>
                     <input
                             type="email"
                             name="login"
@@ -63,25 +75,37 @@
                             placeholder="Sua senha"
                     />
                 </div>
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center justify-content-center">
                     <button type="submit" class="btn btn-primary">
-                        Entrar na conta
+                        Criar conta
                     </button>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-center pt-2">
                     <a
-                            href="{% url 'dashboard:map' %}"
-                            role="button"
-                            class="ms-2 fs-6 btn btn-dark"
+                    href="{% url 'dashboard:login' %}"
+                    role="button"
+                    class="btn btn-link"
+                    >
+                       Já tenho uma conta
+                    </a> 
+
+                    <a
+                    href="{% url 'dashboard:map' %}"
+                    role="button"
+                    class="btn btn-link"
                     >
                         Voltar
-                    </a>
+                    </a> 
                 </div>
             </form>
         </div>
         <div
-                class="col-lg-7 col-md-6 col-sm-2 d-none d-md-block"
-                style="
-            background-image: url('https://img.freepik.com/fotos-gratis/cachoeira-no-parque-nacional-namtok-samlan-saraburi-tailandia_554837-293.jpg?w=740&t=st=1679876135~exp=1679876735~hmac=4a00744232ec87b066b65e6cfd7e69ee46c02b31c21f12aea50a73828e6e4412');
-            background-size: cover;
+            class="col-lg-7 w-50 col-md-6 col-sm-2 d-none d-md-block"
+            style="
+            background-image: url({% static 'images/icon.png' %});
+            background-size: cover; background-position:center;
+
           "
         ></div>
     </div>
