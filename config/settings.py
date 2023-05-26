@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'core',
     'mqtt',
     'dashboard',
+    'accounts',
 
     'allauth',
     'allauth.account',
