@@ -5,4 +5,4 @@ django-bootstrap-icons
 django-extensions
 django-pwa
 paho-mqtt
-
+plotly
