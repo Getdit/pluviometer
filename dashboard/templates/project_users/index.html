@@ -6,12 +6,13 @@
           <h4 class="ms-3">Bolsistas do ProjetoX</h4>
         </div>
         <button
+        onclick="changeModalTitle('Novo bolsista')"
           type="button"
           data-bs-toggle="modal"
-          data-bs-toggle="modal" data-bs-target="#createProject"
+          data-bs-target="#userModal"
           class="mt-sm-0 btn btn-dark d-flex align-items-center"
         >
-        {% bs_icon 'plus' size='1.2em' %}<span class="ps-1">Novo bolsita</span>
+        {% bs_icon 'plus' size='1.2em' %}<span class="ps-1">Novo bolsista</span>
         </button>
       </div>
     <div class="row mt-4">
@@ -31,6 +32,7 @@
                 <td>{{ user.email }}</td>                                
                 <td>                   
                     <button
+                        onclick="changeModalTitle('Editando bolsista')"
                         type="button"
                         style="
                         --bs-btn-padding-y: 0.25rem;
@@ -39,7 +41,7 @@
                         "
                         class="btn btn-success me-2"
                         data-bs-toggle="modal"
-                        data-bs-target="#sensorModal"
+                        data-bs-target="#userModal"
                     >
                         {% bs_icon 'pencil-square' size='1.2em' %}Editar
                     </button>
@@ -92,7 +94,7 @@
                     type="text"
                     class="form-control"
                     id="name"
-                    value="bolsista1"
+                    placeholder="bolsista1"
                     required
                 />
                 </div>
@@ -102,7 +104,7 @@
                     type="email"
                     class="form-control"
                     id="email"
-                    value="email@email.com"
+                    placeholder="email@email.com"
                     required
                 />
                 </div>
@@ -126,5 +128,9 @@
     function goBack() {
       window.history.back();
     }
+
+    function changeModalTitle(title) {
+        document.getElementById('userModalLabel').innerText = title;
+      }
   </script>
 {% endblock content %}
