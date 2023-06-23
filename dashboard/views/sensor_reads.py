@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 
 class SensorReadsView(View):
-    template_name = 'sensor_reads/index.html'
+    template_name = 'dashboard/sensor_reads.html'
 
     def get(self, request, *args, **kwargs):
         context = {

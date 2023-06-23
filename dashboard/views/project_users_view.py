@@ -1,12 +1,11 @@
-from django.views.generic import View
+from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 
+from accounts.models import Profile
 
-class ProjectsUsersView(View):
-    template_name = 'project_users/index.html'
+class ProjectsUsersView(LoginRequiredMixin, ListView):
+    template_name = 'dashboard/project_users.html'
 
-    def get(self, request, *args, **kwargs):
-        context = {
-            "users": [{'name': "erik", 'email': 'email@email.com'}, {'name': "erik", 'email': 'email@email.com'}, {'name': "erik", 'email': 'email@email.com'}]
-        }
-        return render(request, self.template_name, context=context)
+    def get_queryset(self):
+        return Profile.objects.filter(projects__id=self.kwargs['pk'])

@@ -32,18 +32,19 @@
         </div>
       </form>
     </div>
-    
-    {% for device in devices %}
+
+    {% for device in object_list %}
     <div
     class="w-100 d-flex flex-column flex-sm-row align-items-center justify-content-between border rounded px-3 py-3 mt-3"
     >    
     <div class="d-flex flex-column pe-5">
       <div class="d-flex mb-3">
         <p class="mb-0 me-3 fs-5 fw-semibold">{{ device.model }}</p>        
-        <a href="{% url 'dashboard:sensor_reads' project_id=1 sensor_id=1 %}" class="btn btn-primary btn-sm">Leituras</a>
+        <a href="{% url 'dashboard:sensor_reads' pk=1 sensor=1 %}" class="btn btn-primary btn-sm">Leituras</a>
       </div>
 
         <span class="fs-6 fw-semibold me-2">MAC: <strong>{{device.mac}}</strong></span>
+        <span class="fs-6 fw-semibold me-2">Modelo: <strong>{{device.model}}</strong></span>
         <span class="fs-6 fw-semibold me-2">Última chamada: <strong>{{device.last_call}}</strong></span>
         <span class="fs-6 fw-semibold me-2">Localização: <strong>{{device.location}}</strong></span>
         <span class="fs-6 fw-semibold me-2">Latitude: <strong>{{device.latitude}}</strong></span>
@@ -78,6 +79,8 @@
         </div>                   
         </div>                          
     </div>
+    {% empty %}
+        Nenhum dispositivo encontrado
     {% endfor %}      
 </div>
 

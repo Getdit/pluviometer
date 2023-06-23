@@ -31,7 +31,7 @@ class ChartForm(forms.Form):
 
 
 class ChartView(View):
-    template_name = 'chart/index.html'
+    template_name = 'dashboard/chart.html'
 
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)

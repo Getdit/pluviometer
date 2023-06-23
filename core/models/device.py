@@ -22,6 +22,9 @@ class Device(models.Model):
             client.subscribe(f"sensor/{self.mac.lower()}/out")
         return r
 
+    def __str__(self):
+        return f"{self.location}: {self.model} - {self.mac} "
+
     def set_logs(self, data):
         log = self.devicelog_set.create(device=self.id)
 

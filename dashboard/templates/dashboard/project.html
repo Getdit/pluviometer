@@ -1,0 +1,70 @@
+{% extends "main.html" %} {% block content %}{%load bootstrap_icons%}
+<section class="container-fluid ps-4 pe-4 mt-5">
+  <div class="w-50">
+    <div class="">
+      <div class="d-flex align-items-center mb-3">
+        <span class="cursor-pointer" onclick="goBack()"
+        >{% bs_icon 'arrow-left' size='1.5em' color='#000' %}</span
+        >
+                    <h4 class="ms-3">{{ object.name }}</h4>
+                </div>
+                <p class="pt-3 pb-4">
+                    {{ object.description }}
+                </p>
+            </div>
+
+            <div class="mt-5">
+                <div class="w-100 d-flex justify-content-between pb-2">
+                    <h2 class="fs-4">Sensores</h2>
+                    <a
+                            class="btn btn-info"
+                            href="{% url 'dashboard:project_sensors' pk=object.id %}"
+                            style="--bs-btn-padding-x: 0.5rem; --bs-btn-font-size: 0.75rem"
+                    >Ver todos</a
+                    >
+                </div>
+                <ol class="list-group list-group-numbered">
+                    {% for device in object.device_set.all %}
+                        <li
+                                class="list-group-item d-flex justify-content-between align-items-start"
+                        >
+                            <div class="ms-2 me-auto">
+                                <p class="text-start mb-0">{{ device }}</p>
+                            </div>
+                        </li>
+                    {% empty %}
+                        Nenhum dispositivo cadastrado
+                    {% endfor %}
+                </ol>
+            </div>
+
+            <div class="mt-5">
+                <div class="w-100 d-flex justify-content-between pb-2">
+                    <h2 class="fs-4">Bolsistas</h2>
+                    <a
+                            class="btn btn-info"
+                            href="{% url 'dashboard:project_users' pk=object.id %}"
+                            style="--bs-btn-padding-x: 0.5rem; --bs-btn-font-size: 0.75rem"
+                    >Ver todos</a>
+                </div>
+                <ol class="list-group list-group-numbered">
+                    {% for profile in object.profile_set.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-start" >
+                            <div class="ms-2 me-auto">
+                                <p class="text-start mb-0">{{ profile.get_full_name }}</p>
+                            </div>
+                        </li>
+                    {% empty %}
+                        Nenhum bolsista atrelado
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+{% endblock content %}

@@ -1,11 +1,7 @@
-from django.views.generic import TemplateView
+from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from core.models import Location
-
-class ProjectsView(TemplateView):
-    template_name = 'projects/index.html'
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data()
-    #     context["locations"] = Location.objects.all()
-    #     return context
+from core.models import Project
+class ProjectsView(LoginRequiredMixin, ListView):
+    template_name = 'dashboard/projects.html'
+    model = Project

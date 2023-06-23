@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'core',
     'mqtt',
     'dashboard',
+    'accounts',
 
     'allauth',
     'allauth.account',
@@ -142,6 +143,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = "email"
+LOGIN_REDIRECT_URL = "/projects/"
 
 # START PWA SETTINGS
 PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'dashboard/static/js', 'serviceworker.js')

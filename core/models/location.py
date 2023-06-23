@@ -10,6 +10,8 @@ class Location(models.Model):
     latitude = models.FloatField(verbose_name="Latitude")
     longitude = models.FloatField(verbose_name="Longitude")
 
+    def __str__(self):
+        return self.name
 
     def get_lat_str(self):
         return str(self.latitude).replace(",", ".")

@@ -1,37 +1,12 @@
-from django.views.generic import View
+from django.views.generic import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 
+from core.models import Device
 
-class ProjectsSensorsView(View):
-    template_name = 'project_sensors/index.html'
+class ProjectsSensorsView(LoginRequiredMixin, ListView):
+    template_name = 'dashboard/project_sensors.html'
+    model = Device
 
-    def get(self, request, *args, **kwargs):
-        context = {
-            'devices': [
-                {
-                    'mac': 'AB:CD:EF:12:34:56',
-                    'model': 'Device A',
-                    'last_call': '2023-05-20 09:15:00',
-                    'location': 'Local A',
-                    'latitude': '123.456',
-                    'longitude': '789.012'
-                },
-                {
-                    'mac': '12:34:56:78:90:AB',
-                    'model': 'Device B',
-                    'last_call': '2023-05-19 14:30:00',
-                    'location': 'Local B',
-                    'latitude': '456.789',
-                    'longitude': '012.345'
-                },
-                {
-                    'mac': 'EF:GH:IJ:KL:MN:OP',
-                    'model': 'Device C',
-                    'last_call': '2023-05-18 19:45:00',
-                    'location': 'Local C',
-                    'latitude': '789.012',
-                    'longitude': '345.678'
-                },
-            ],
-        }
-        return render(request, self.template_name, context=context)
+    def get_queryset(self):
+        return self.model.objects.filter(project=self.kwargs['pk'])

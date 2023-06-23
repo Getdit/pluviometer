@@ -1,0 +1,69 @@
+{% extends "main.html" %} {% block content %}{% load bootstrap_icons %}
+    <section class="container-fluid ps-4 pe-4 mt-5">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4>Projetos</h4>
+
+            {% if user.profile.is_researcher %}
+                <button
+                        type="button"
+                        data-bs-toggle="modal"
+                        data-bs-toggle="modal" data-bs-target="#createProject"
+                        class="mt-sm-0 btn btn-dark d-flex align-items-center"
+                >
+                    {% bs_icon 'plus' size='1.2em' %}<span class="ps-1">Novo projeto</span>
+                </button>
+            {% endif %}
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="createProject" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog  modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Novo projeto</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="">
+                                <form action="{% url 'dashboard:create_project' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Nome do projeto</label>
+                                        <input type="text" name="name" class="form-control" id="exampleFormControlInput1" required
+                                               placeholder="pluviometer">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlTextarea1" class="form-label">Descrição</label>
+                                        <textarea name="description" class="form-control" id="exampleFormControlTextarea1" required
+                                                  rows="3"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-4">Criar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% for object in object_list %}
+            <div class="row row-cols-1 row-cols-md-2 g-4 mt-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ object.name }}</h5>
+                        <p class="card-text">
+                            {{ project.description }}
+                        </p>
+                        <a href="{% url 'dashboard:project' object.id %}" class="btn btn-primary">Ver projeto</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            Nenhum projecto encontrado
+        {% endfor %}
+
+        </div>
+    </section>
+{% endblock content %}
