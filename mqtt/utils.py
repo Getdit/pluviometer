@@ -31,7 +31,7 @@ try:
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
-    client.connect(host=settings.BROKER_ADDRESS, port=16988)
+    client.connect(host=settings.BROKER_ADDRESS, port=settings.BROKER_PORT)
 except Exception as e:
     print(e)
     client = None
