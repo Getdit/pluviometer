@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Device(models.Model):
-    mac = models.CharField(max_length=12, verbose_name="MAC")
+    mac = models.CharField(max_length=30, verbose_name="MAC")
     model = models.ForeignKey("core.DeviceModel", on_delete=models.CASCADE, verbose_name="Modelo")
 
     last_call = models.DateTimeField(verbose_name="Última chamada")
@@ -11,7 +11,9 @@ class Device(models.Model):
     latitude = models.FloatField(verbose_name="Latitude")
     longitude = models.FloatField(verbose_name="Longitude")
 
-    project = models.ForeignKey("core.Project", on_delete=models.CASCADE, verbose_name="Projeto", null=True)
+    project = models.ManyToManyField("core.Project", verbose_name="Projeto", null=True)
+
+    graph_data_models = models.ManyToManyField("core.DataModel", verbose_name="Modelos de dados para o gráfico", blank=True)
 
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
@@ -35,3 +37,12 @@ class Device(models.Model):
                     model=model_data,
                     value=data[model_data.reference_tag]
                 )
+
+        self.last_call = log.timestamp
+        self.save()
+
+        self.verify_alerts()
+
+    def verify_alerts(self):
+        for alert in self.project.alert_set.all():
+            alert.verify()

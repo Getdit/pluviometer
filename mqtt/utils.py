@@ -12,7 +12,7 @@ def on_connect(mqtt_client, userdata, flags, rc):
             except:
                 pass
         for device in Device.objects.all():
-            mqtt_client.subscribe(f"sensor/{device.mac.lower()}/out")
+            mqtt_client.subscribe(f"sensor/{device.mac.upper()}/out")
     else:
         raise NameError("MQTT Connect error: {}".format(rc))
 
@@ -31,7 +31,7 @@ try:
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_message = on_message
-    client.connect(host=settings.BROKER_ADDRESS, port=1883)
+    client.connect(host=settings.BROKER_ADDRESS, port=16988)
 except Exception as e:
     print(e)
     client = None

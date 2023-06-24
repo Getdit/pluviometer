@@ -1,0 +1,335 @@
+{% extends "main.html" %} {% block content %} {% load bootstrap_icons %}
+    <section class="container-fluid ps-4 pe-4 mt-5">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <div class="d-flex">
+                <span class="cursor-pointer"
+                      onclick="goBack()">{% bs_icon 'arrow-left' size='1.5em' color='#000' %}</span>
+                <h4 class="ms-3">Todos os modelos de dispositivos</h4>
+            </div>
+            <button
+                    onclick="changeModalTitle('Novo sensor')"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#sensorModal"
+                    class="mt-sm-0 btn btn-dark d-flex align-items-center"
+            >
+                {% bs_icon 'plus' size='1.2em' %}<span class="ps-1">Novo modelo de dispositivo</span>
+            </button>
+        </div>
+
+
+        <div class="d-flex flex-column align-items-center">
+            <div class="w-100">
+                <form>
+                    <div class="mb-3">
+                        <label for="search" class="form-label invisible">Pesquisar</label>
+                        <input
+                                style="width: 280px"
+                                type="text"
+                                class="form-control"
+                                id="search"
+                                placeholder="Eg: Sombrio, temperatura-1"
+                        />
+                    </div>
+                </form>
+            </div>
+
+            {% for model in object_list %}
+                <div
+                        class="w-100 d-flex flex-column flex-sm-row align-items-center justify-content-between border rounded px-3 py-3 mt-3"
+                >
+                    <div class="d-flex flex-column pe-5">
+                        <div class="d-flex mb-3">
+                            <p class="mb-0 me-3 fs-5 fw-semibold">{{ model.name }}</p>
+                            {#        <a href="{% url 'dashboard:sensor_reads' pk=1 sensor=1 %}" class="btn btn-primary btn-sm">Leituras</a>#}
+                        </div>
+
+
+                        <div class="mt-3">
+                            <a
+                                    href="{% url 'dashboard:device_models_detail' model.id %}"
+                                    style="
+                                      --bs-btn-padding-y: 0.25rem;
+                                      --bs-btn-padding-x: 0.5rem;
+                                      --bs-btn-font-size: 0.75rem;
+                                    "
+                                    class="btn btn-primary me-2"
+                            >
+                                {% bs_icon 'pencil-square' size='1.2em' %}Ver
+                            </a>
+                            <button
+                                    onclick="changeModalTitle('Editando sensor')"
+                                    type="button"
+                                    style="
+                                          --bs-btn-padding-y: 0.25rem;
+                                          --bs-btn-padding-x: 0.5rem;
+                                          --bs-btn-font-size: 0.75rem;
+                                        "
+                                    class="btn btn-success me-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#sensorModal"
+                            >
+                                {% bs_icon 'pencil-square' size='1.2em' %}Editar
+                            </button>
+                            <button
+                                    onclick="changeDeleteModalURL('{% url 'dashboard:device_models_delete' pk=model.pk %}')"
+                                    type="button"
+                                    style="
+              --bs-btn-padding-y: 0.25rem;
+              --bs-btn-padding-x: 0.5rem;
+              --bs-btn-font-size: 0.75rem;
+            "
+                                    class="btn btn-danger"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteSensorModal"
+                            >
+                                {% bs_icon 'trash' size='1.2em' %}Deletar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                Nenhum dispositivo encontrado
+            {% endfor %}
+        </div>
+        {% comment %} Delete Modal {% endcomment %}
+        <div
+                class="modal fade"
+                id="deleteSensorModal"
+                tabindex="-1"
+                aria-labelledby="deleteSensorModalLabel"
+                aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteSensorModalLabel">
+                            Editando dispositivo
+                        </h1>
+                        <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="w-100">
+                            <div class="mb-3">
+                                <label for="mac" class="form-label">MAC</label>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="mac"
+                                        placeholder="nome do sensor"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="model_name" class="form-label">Modelos</label>
+                                <select class="form-select" aria-label="model_name">
+                                    <option selected>Selecione um modelo</option>
+                                    <option value="1">Temperatura-01</option>
+                                    <option value="2">Pluviosidade-03</option>
+                                    <option value="3">Umidade-10</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Localização</label>
+                                <select class="form-select" aria-label="location">
+                                    <option selected>Selecione uma localização</option>
+                                    <option value="1">location-01</option>
+                                    <option value="2">location-03</option>
+                                    <option value="3">location-10</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="latitude" class="form-label">Latitude</label>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        id="latitude"
+                                        placeholder="1"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="longitude" class="form-label">Longitude</label>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        id="longitude"
+                                        placeholder="5"
+                                        required
+                                />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                        >
+                            Fechar
+                        </button>
+                        <button type="button" class="btn btn-primary">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% comment %} Delete Modal {% endcomment %}
+        <div
+                class="modal fade"
+                id="deleteSensorModal"
+                tabindex="-1"
+                aria-labelledby="deleteSensorModalLabel"
+                aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteSensorModalLabel">
+                            Editando dispositivo
+                        </h1>
+                        <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="w-100">
+                            <div class="mb-3">
+                                <label for="mac" class="form-label">MAC</label>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="mac"
+                                        placeholder="nome do sensor"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="model_name" class="form-label">Modelos</label>
+                                <select class="form-select" aria-label="model_name">
+                                    <option selected>Selecione um modelo</option>
+                                    <option value="1">Temperatura-01</option>
+                                    <option value="2">Pluviosidade-03</option>
+                                    <option value="3">Umidade-10</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Localização</label>
+                                <select class="form-select" aria-label="location">
+                                    <option selected>Selecione uma localização</option>
+                                    <option value="1">location-01</option>
+                                    <option value="2">location-03</option>
+                                    <option value="3">location-10</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="latitude" class="form-label">Latitude</label>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        id="latitude"
+                                        placeholder="1"
+                                        required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label for="longitude" class="form-label">Longitude</label>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        id="longitude"
+                                        placeholder="5"
+                                        required
+                                />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                        >
+                            Fechar
+                        </button>
+                        <button type="button" class="btn btn-primary">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% comment %} Modal {% endcomment %}
+        <div
+                class="modal fade"
+                id="sensorModal"
+                tabindex="-1"
+                aria-labelledby="sensorModalLabel"
+                aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form class="w-100">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="sensorModalLabel">
+                                Editando dispositivo
+                            </h1>
+                            <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                            ></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="mac" class="form-label">Nome</label>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="name"
+                                        name="name"
+                                        placeholder="Nome do modelo"
+                                        required
+                                />
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-bs-dismiss="modal"
+                            >
+                                Fechar
+                            </button>
+                            <button type="button" class="btn btn-primary">Confirmar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </section>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        function changeModalTitle(title) {
+            document.getElementById('sensorModalLabel').innerText = title;
+        }
+
+        function changeDeleteModalURL(url) {
+            document.getElementById('deleteSensorModalForm').action = url;
+        }
+    </script>
+{% endblock content %}

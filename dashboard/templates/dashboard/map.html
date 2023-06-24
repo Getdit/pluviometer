@@ -1,151 +1,120 @@
 {% extends "main.html" %} {% block content %}
-<section>
-  <div class="">
-    <h1 class="pt-5 pb-2 fs-3 text-center fw-bold">
-      Pluviometer - Fique ligado nas chuvas ao seu redor!
-    </h1>
-  </div>
-
-  <div id="map"></div>
-
-  <div class="mt-4">
-    <div class="ps-4 w-50">
-      <div class="d-flex flex-column me-5">
-        <div><strong class="pe-2">Cidade:</strong><span>Araranguá</span></div>
-        <div><strong class="pe-2">Temperatura:</strong><span>28º</span></div>
-        <div>
-          <strong class="pe-2">Latutude:</strong><span> -28.951179</span>
-        </div>
-        <div>
-          <strong class="pe-2">Longitude:</strong><span> -49.467383</span>
-        </div>
-      </div>
-      <div class="">
-        <h4 class="mt-4">Nivel de alerta</h4>
-        <div class="d-flex align-items-center pb-2">
-          <button
-            type="button"
-            class="btn btn-success"
-            data-bs-toggle="tooltip"
-            data-bs-placement="top"
-            data-bs-custom-class="custom-tooltip"
-            data-bs-title="This top tooltip is themed via CSS variables."
-          >
-            45%
-          </button>
-          <p class="m-0 ps-2">Normal</p>
-        </div>
-        <div class="d-flex align-items-center">
-          <button
-            type="button"
-            class="btn btn-danger"
-            data-bs-toggle="tooltip"
-            data-bs-placement="botton"
-            data-bs-custom-class="custom-tooltip"
-            data-bs-title="This top tooltip is themed via CSS variables."
-          >
-            65%
-          </button>
-          <p class="m-0 ps-2">Perigoso</p>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="offcanvas offcanvas-end w-25 h-50"
-      tabindex="-1"
-      id="offcanvasBottom"
-      aria-labelledby="offcanvasBottomLabel"
-    >
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasBottomLabel">
-          Instruções em caso de perigo
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="offcanvas-body small">
-        <ul>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Lorem ipsum dolor sit.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            alert("GeoLocalização não foi possivel");
+    <style>
+        body section div.w-100 {
+            height: 100%;
+            max-width: 100vw!important;
         }
-    }
+    </style>
+    <section>
+        <div class="">
+            <h1 class="pt-5 pb-2 fs-3 text-center fw-bold">
+                Pluviometer - Fique ligado nas chuvas ao seu redor!
+            </h1>
+        </div>
 
-    function showPosition(position) {
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
-    }
+        <div id="map"></div>
 
-    var latitude = -28.951179;
-    var longitude = -49.467383;
+        <div class="mt-4">
 
-    getLocation();
+            <div
+                    class="offcanvas offcanvas-end w-25 h-50"
+                    tabindex="-1"
+                    id="offcanvasBottom"
+                    aria-labelledby="offcanvasBottomLabel"
+            >
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasBottomLabel">
+                        Instruções em caso de perigo
+                    </h5>
+                    <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="offcanvas"
+                            aria-label="Close"
+                    ></button>
+                </div>
+                <div class="offcanvas-body small">
+                    <p id="instructions"></p>
+                </div>
+            </div>
+        </div>
 
-    const zoom = 13;
-    const mapContainer = document.querySelector("#map");
-    mapContainer.style.width = "100%"
-    mapContainer.style.height = "400px"
-    mapContainer.style.border = "none"
-    var dangerousLevel  = 70;
+        <script>
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    alert("GeoLocalização não foi possivel");
+                }
+            }
 
-    if(dangerousLevel  >= 65) {
-       ColorIndicator = '#f03';
-       message = `
-       <div>
-         <strong>Perigo!</strong>
-         <br />
-         <button type="button" class="btn fs-6 btn-link m-0 p-0"
-         data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
-         aria-controls="offcanvasBottom">Ver instruções</button>
-       </div>`
-    } else {
-        ColorIndicator = '#40c752';
-        message = 'Clima suave!'
-    }
+            function showPosition(position) {
+                latitude = position.coords.latitude;
+                longitude = position.coords.longitude;
+            }
 
-    var map = L.map('map').setView([latitude, longitude], zoom);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-    }).addTo(map);
+            function changeInstructions(instructions) {
+                document.getElementById("instructions").innerHTML = instructions;
+            }
 
-    L.marker([latitude, longitude]).addTo(map)
-    .bindPopup(`${message}`)
-    .openPopup();
+            var latitude = -28.951179;
+            var longitude = -49.467383;
 
-    var circle = L.circle([latitude, longitude], {
-        color: `${ColorIndicator}`,
-        fillColor: `${ColorIndicator}`,
-        fillOpacity: 0.5,
-        radius: 800
-    }).addTo(map);
+            getLocation();
 
-    {% comment %} {% for local in locations %}
-    var marker_{{ local.id }} = L.marker([{{ local.get_lat_str }}, {{ local.get_lon_str }}]).addTo(map);
-    marker_{{ local.id }}.bindPopup("{{ local.description }}").openPopup();
-    {% endfor %} {% endcomment %}
-  </script>
-</section>
+            const zoom = 13;
+            const mapContainer = document.querySelector("#map");
+            mapContainer.style.width = "100%"
+            mapContainer.style.height = "400px"
+            mapContainer.style.border = "none"
+            var dangerousLevel = 70;
+
+            if (dangerousLevel >= 65) {
+                ColorIndicator = '#f03';
+                message = `
+               <div>
+                 <strong>Perigo!</strong>
+                 <br />
+                 <button type="button" class="btn fs-6 btn-link m-0 p-0"
+                 data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
+                 aria-controls="offcanvasBottom">Ver instruções</button>
+               </div>`
+            } else {
+                ColorIndicator = '#40c752';
+                message = 'Clima suave!'
+            }
+
+            var map = L.map('map').setView([latitude, longitude], zoom);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+
+            {% for local in locations %}
+                var in_alert = {% if local.in_alert %} true {% else %} false {% endif %};
+                alert_instructions_{{ local.id }} = "{{ local.alert_instructions }}";
+                message = `
+               <div>
+                 <strong>${in_alert ? 'PERIGO!': 'Leituras Ok'}</strong>
+                 <br />
+                 <p>{{ local.name }}
+                 <br />
+                 {{ local.address }}
+                 <br />
+                 {{ local.latitude }} , {{ local.longitude }}</p>
+                 <button type="button" class="btn fs-6 btn-link m-0 p-0"
+                 data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom"
+                 aria-controls="offcanvasBottom"
+                onclick="changeInstructions(alert_instructions_{{ local.id }})">Ver instruções</button>
+               </div>`
+                var color_indicator_{{ local.id }} = in_alert ? '#f03': '#40c752';
+                var marker_{{ local.id }} = L.marker([{{ local.get_lat_str }}, {{ local.get_lon_str }}]).addTo(map).bindPopup(`${message}`).openPopup();
+                var circle_{{ local.id }} = L.circle([{{ local.get_lat_str }}, {{ local.get_lon_str }}], {
+                    color: color_indicator_{{ local.id }},
+                    fillColor: color_indicator_{{ local.id }},
+                    fillOpacity: 0.5,
+                    radius: {{ local.radius }}
+                }).addTo(map);
+            {% endfor %}
+        </script>
+    </section>
 {% endblock content %}

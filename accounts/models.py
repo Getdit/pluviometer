@@ -7,7 +7,7 @@ class Profile(models.Model):
     research_institution = models.CharField(max_length=100, verbose_name="Instituição de pesquisa")
     reasearch_area = models.CharField(max_length=150, verbose_name="Área de pesquisa")
 
-    projects = models.ManyToManyField('core.Project', verbose_name="Projetos (como bolsista)", blank=True)
+    projects = models.ManyToManyField('core.Project', verbose_name="Projetos (como bolsista)", blank=True, related_name="users")
 
     owner = models.OneToOneField('auth.User', on_delete=models.CASCADE, verbose_name="Usuário")
 

@@ -31,7 +31,7 @@
           <div class="d-flex flex-column justify-content-center border-end ps-3 pe-5">
             <h1 class="pb-2 fw-bold">Criar conta</h1>
             <p>Crie a sua para obter acesso a mais funções da aplicação </p>
-            <form method="POST" action="{% url 'account_login' %}">
+            <form method="POST" action="{% url 'account_signup' %}">
               {% csrf_token %}
               <div class="mb-3">
                     <label for="name" class="form-label">Nome Completo:</label>
@@ -72,7 +72,7 @@
                 </div>
               <div class="d-flex flex-column flex-md-row align-items-md-center">
                 <button type="submit" class="btn btn-primary mb-2 mb-md-0 me-md-2">Criar conta</button>
-                <a href="{% url 'dashboard:login' %}" role="button" class="btn btn-secondary">Já tenho conta</a>
+                <a href="{% url 'account_login' %}" role="button" class="btn btn-secondary">Já tenho conta</a>
               </div>
             </form>
           </div>

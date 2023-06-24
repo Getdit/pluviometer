@@ -3,7 +3,7 @@
   <div class="d-flex align-items-center justify-content-between mb-3">
     <div class="d-flex">
       <span class="cursor-pointer" onclick="goBack()">{% bs_icon 'arrow-left' size='1.5em' color='#000' %}</span>
-      <h4 class="ms-3">Sensores do ProjetoX</h4>
+      <h4 class="ms-3">Sensores</h4>
     </div>
     <button
       onclick="changeModalTitle('Novo sensor')"
@@ -15,7 +15,7 @@
     {% bs_icon 'plus' size='1.2em' %}<span class="ps-1">Novo sensor</span>
     </button>
   </div>
-  
+
 
   <div class="d-flex flex-column align-items-center">
     <div class="w-100">
@@ -36,11 +36,14 @@
     {% for device in object_list %}
     <div
     class="w-100 d-flex flex-column flex-sm-row align-items-center justify-content-between border rounded px-3 py-3 mt-3"
-    >    
+    >
     <div class="d-flex flex-column pe-5">
       <div class="d-flex mb-3">
-        <p class="mb-0 me-3 fs-5 fw-semibold">{{ device.model }}</p>        
-        <a href="{% url 'dashboard:sensor_reads' pk=1 sensor=1 %}" class="btn btn-primary btn-sm">Leituras</a>
+        <p class="mb-0 me-3 fs-5 fw-semibold">{{ device.model }}</p>
+        <a href="{% url 'dashboard:device_logs' device.id 'one_day'%}" class="btn btn-primary btn-sm">Leituras 1 dia</a> &nbsp;
+        <a href="{% url 'dashboard:device_logs' device.id 'three_days'%}" class="btn btn-primary btn-sm">Leituras 3 dias</a> &nbsp;
+        <a href="{% url 'dashboard:device_logs' device.id 'five_days'%}" class="btn btn-primary btn-sm">Leituras 5 dias</a> &nbsp;
+        <a href="{% url 'dashboard:device_logs' device.id 'seven_days'%}" class="btn btn-primary btn-sm">Leituras 7 dias</a> &nbsp;
       </div>
 
         <span class="fs-6 fw-semibold me-2">MAC: <strong>{{device.mac}}</strong></span>
@@ -52,20 +55,6 @@
 
         <div class="mt-3">
           <button
-            onclick="changeModalTitle('Editando sensor')"
-            type="button"
-            style="
-              --bs-btn-padding-y: 0.25rem;
-              --bs-btn-padding-x: 0.5rem;
-              --bs-btn-font-size: 0.75rem;
-            "
-            class="btn btn-success me-2"
-            data-bs-toggle="modal"
-            data-bs-target="#sensorModal"
-          >
-            {% bs_icon 'pencil-square' size='1.2em' %}Editar
-          </button>
-          <button
             type="button"
             style="
               --bs-btn-padding-y: 0.25rem;
@@ -74,14 +63,14 @@
             "
             class="btn btn-danger"
           >
-            {% bs_icon 'trash' size='1.2em' %}Deletar
+            {% bs_icon 'trash' size='1.2em' %} Remover
           </button>
-        </div>                   
-        </div>                          
+        </div>
+        </div>
     </div>
     {% empty %}
         Nenhum dispositivo encontrado
-    {% endfor %}      
+    {% endfor %}
 </div>
 
   {% comment %} Modal {% endcomment %}
@@ -94,6 +83,8 @@
     >
   <div class="modal-dialog">
   <div class="modal-content">
+      <form class="w-100" method="post" action="{% url 'dashboard:project_devices_add' project %}">
+          {% csrf_token %}
       <div class="modal-header">
       <h1 class="modal-title fs-5" id="sensorModalLabel">
           Editando dispositivo
@@ -106,56 +97,17 @@
       ></button>
       </div>
       <div class="modal-body">
-      <form class="w-100">
           <div class="mb-3">
             <label for="mac" class="form-label">MAC</label>
             <input
                 type="text"
                 class="form-control"
                 id="mac"
+                name="mac"
                 placeholder="nome do sensor"
                 required
             />
-          </div>         
-          <div class="mb-3">
-            <label for="model_name" class="form-label">Modelos</label>
-            <select class="form-select" aria-label="model_name">
-              <option selected>Selecione um modelo</option>
-              <option value="1">Temperatura-01</option>
-              <option value="2">Pluviosidade-03</option>
-              <option value="3">Umidade-10</option>
-            </select>
           </div>
-          <div class="mb-3">
-            <label for="location" class="form-label">Localização</label>
-            <select class="form-select" aria-label="location">
-              <option selected>Selecione uma localização</option>
-              <option value="1">location-01</option>
-              <option value="2">location-03</option>
-              <option value="3">location-10</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="latitude" class="form-label">Latitude</label>
-            <input
-                type="number"
-                class="form-control"
-                id="latitude"
-                placeholder="1"
-                required
-            />
-          </div>  
-          <div class="mb-3">
-            <label for="longitude" class="form-label">Longitude</label>
-            <input
-                type="number"
-                class="form-control"
-                id="longitude"
-                placeholder="5"
-                required
-            />
-          </div>  
-      </form>
       </div>
       <div class="modal-footer">
       <button
@@ -165,8 +117,9 @@
       >
           Fechar
       </button>
-      <button type="button" class="btn btn-primary">Confirmar</button>
+      <button type="submit" class="btn btn-primary">Confirmar</button>
       </div>
+      </form>
   </div>
 </div>  
 </section>
