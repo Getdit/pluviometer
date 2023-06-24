@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 RUN apt-get update
 RUN apt-get install -y apt-utils vim curl apache2 apache2-utils
 RUN apt-get -y install python3 libapache2-mod-wsgi-py3
