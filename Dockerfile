@@ -19,7 +19,7 @@ RUN a2enmod proxy
 RUN a2enmod proxy_http
 RUN a2enmod proxy_balancer
 RUN a2enmod lbmethod_byrequests
-RUN service apache2 start
-RUN service apache2 reload
+RUN sudo service apache2 start
+RUN sudo service apache2 reload
 EXPOSE 80 3500
 CMD ["apache2ctl", "-D", "FOREGROUND"]
