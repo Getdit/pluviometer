@@ -14,6 +14,7 @@ RUN pip3 install -r requirements.txt
 COPY . /code/
 ADD ./demo_site.conf /etc/apache2/sites-available/demo_site.conf
 RUN a2ensite demo_site.conf
+RUN echo 'ServerName 127.0.0.1' >> /etc/apache2/apache2.conf
 RUN a2enmod proxy
 RUN a2enmod proxy_http
 RUN a2enmod proxy_balancer
