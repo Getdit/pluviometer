@@ -41,6 +41,11 @@ services:
       - elasticsearch
     networks:
       - mynetwork
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
   elasticsearch:
     image: launcher.gcr.io/google/elasticsearch2
     container_name: elasticsearch
