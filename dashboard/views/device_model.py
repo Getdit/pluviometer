@@ -15,7 +15,7 @@ class DeviceModelDetailView(LoginRequiredMixin,DetailView):
 class DeviceModelCreateView(LoginRequiredMixin,CreateView):
     template_name = 'dashboard/device_model.html'
     model = DeviceModel
-    fields = ['name', 'description']
+    fields = ['name']
 
     def get_success_url(self):
         obj = self.object
@@ -24,7 +24,7 @@ class DeviceModelCreateView(LoginRequiredMixin,CreateView):
 class DeviceModelUpdateView(LoginRequiredMixin,UpdateView):
     template_name = 'dashboard/device_model.html'
     model = DeviceModel
-    fields = ['name', 'description']
+    fields = ['name']
 
     def get_success_url(self):
         obj = self.object
