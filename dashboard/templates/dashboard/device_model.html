@@ -56,9 +56,7 @@
                                         --bs-btn-padding-x: 0.5rem;
                                         --bs-btn-font-size: 0.75rem;
                                         "
-                                    class="btn btn-danger"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#deleteSensorModal"
+                                    class="btn btn-danger"                                    
                             >
                                 {% bs_icon 'trash' size='1.2em' %}Deletar
                         </a>
@@ -68,49 +66,7 @@
             {% empty %}
                 Nenhum firmware encontrado
             {% endfor %}
-        </div>
-        {% comment %} Delete Modal {% endcomment %}
-        <div
-                class="modal fade"
-                id="deleteSensorModal"
-                tabindex="-1"
-                aria-labelledby="deleteSensorModalLabel"
-                aria-hidden="true"
-        >
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="deleteSensorModalLabel">
-                            Tem certeza que deseja deletar?
-                        </h1>
-                        <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                        ></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            Ao deletar este firmware, nenhum dispositivo deste modelo poderá baixá-lo.
-                        </p>
-                    </div>
-                    <div class="modal-footer">
-                        <form id="deleteSensorModalForm" method="post" action="">
-                            {%  csrf_token %}
-                            <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    data-bs-dismiss="modal"
-                            >
-                                Fechar
-                            </button>
-                            <button type="submit" class="btn btn-primary">Confirmar</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>   
+        </div>         
 
         {% comment %} Modal {% endcomment %}
         <div
