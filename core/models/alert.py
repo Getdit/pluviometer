@@ -2,7 +2,7 @@ from django.db import models
 
 class Alert(models.Model):
     name = models.CharField(max_length=30, verbose_name="Nome")
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(verbose_name="Descrição", blank=True, null=True)
 
     formula = models.CharField(max_length=90, verbose_name="Fórmula")
 
@@ -21,12 +21,18 @@ class Alert(models.Model):
 
     def formula_validation(self):
         f = self.formula
-        root_params = [x.model.id_tag for x in self.devices.all()]
+        root_params = []
+        for x in self.devices.all():
+            print(x)
+            for y in x.model.datamodel_set.all():
+                root_params.append(y.reference_tag)
+
         params = []
 
         for rp in root_params:
             params.extend(
                 [
+                    f"{rp}",
                     f"{rp}:temp_1h",
                     f"{rp}:temp_3h",
                     f"{rp}:temp_5h",
@@ -38,7 +44,6 @@ class Alert(models.Model):
                     f"{rp}:temp_3d"
                 ]
             )
-
         while "[" in f:
             try:
                 i = f.index("[")
@@ -62,9 +67,10 @@ class Alert(models.Model):
             self.save()
 
     def get_param_value(self, param):
-        for device in self.devices:
-            if device.model.id_tag == param:
-                return device.get_last_value(param)
+        for device in self.devices.all():
+            for datamodel in device.model.datamodel_set.all():
+                if datamodel.reference_tag == param:
+                    return datamodel.get_last_value(param, device.id)
 
     def verify_formula(self):
         f = self.formula

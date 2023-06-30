@@ -8,6 +8,18 @@ class DeviceModelListView(LoginRequiredMixin,ListView):
     template_name = 'dashboard/device_model_list.html'
     model = DeviceModel
 
+    def get_queryset(self):
+        search = self.request.GET.get('search')
+        queryset = self.model.objects.all()
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search'] = self.request.GET.get('search') or ""
+        return context
+
 class DeviceModelDetailView(LoginRequiredMixin,DetailView):
     template_name = 'dashboard/device_model.html'
     model = DeviceModel
@@ -19,7 +31,7 @@ class DeviceModelCreateView(LoginRequiredMixin,CreateView):
 
     def get_success_url(self):
         obj = self.object
-        return reverse('dashboard:device_model_detail', kwargs={'pk': obj.pk})
+        return reverse('dashboard:device_models_detail', kwargs={'pk': obj.pk})
 
 class DeviceModelUpdateView(LoginRequiredMixin,UpdateView):
     template_name = 'dashboard/device_model.html'
@@ -28,14 +40,14 @@ class DeviceModelUpdateView(LoginRequiredMixin,UpdateView):
 
     def get_success_url(self):
         obj = self.object
-        return reverse('dashboard:device_model_detail', kwargs={'pk': obj.pk})
+        return reverse('dashboard:device_models_detail', kwargs={'pk': obj.pk})
 
 class DeviceModelDeleteView(LoginRequiredMixin,DeleteView):
     template_name = 'dashboard/device_model.html'
     model = DeviceModel
 
     def get_success_url(self):
-        return reverse('dashboard:device_model_list')
+        return reverse('dashboard:device_models_list')
 
 class DeviceModelFirmwareCreateView(LoginRequiredMixin,CreateView):
     template_name = 'dashboard/device_model.html'

@@ -7,6 +7,17 @@ from core.models import Project
 class ProjectListView(LoginRequiredMixin, ListView):
     template_name = 'dashboard/projects.html'
     model = Project
+    def get_queryset(self):
+        search = self.request.GET.get('search')
+        queryset = self.model.objects.all()
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search'] = self.request.GET.get('search') or ""
+        return context
 
 class ProjectView(LoginRequiredMixin, DetailView):
     template_name = 'dashboard/project.html'

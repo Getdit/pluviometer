@@ -19,6 +19,11 @@ urlpatterns = [
     path('project/<int:pk>/alerts/<int:alert_pk>/update/', AlertUpdateView.as_view(), name='project_alert_update'),
     path('project/<int:pk>/alerts/<int:alert_pk>/delete/', AlertDeleteView.as_view(), name='project_alert_delete'),
 
+    path('locations/', LocationListView.as_view(), name='location_list'),
+    path('locations/create/', LocationCreateView.as_view(), name='location_create'),
+    path('locations/<int:pk>/update/', LocationUpdateView.as_view(), name='location_update'),
+    path('locations/<int:pk>/delete/', LocationDeleteView.as_view(), name='location_delete'),
+
     path('projects/<int:pk>/users/', ProjectUserListView.as_view(), name='project_user_list'),
     path('projects/<int:pk>/users/add/', ProjectAssignUserView.as_view(), name='project_user_add'),
     path('projects/<int:pk>/users/<int:user_pk>/remove/', ProjectUserRemoveView.as_view(), name='project_user_remove'),
@@ -28,7 +33,7 @@ urlpatterns = [
     path('projects/<int:pk>/devices/<int:device_pk>/remove', ProjectDeviceRemoveView.as_view(), name='project_devices_remove'),
 
     path('devices/', DeviceListView.as_view(), name='devices_list'),
-    path('devices/<int:pk>/create', DeviceCreateView.as_view(), name='device_create'),
+    path('devices/create', DeviceCreateView.as_view(), name='device_create'),
     path('devices/<int:pk>/update', DeviceUpdateView.as_view(), name='device_update'),
     path('devices/<int:pk>/delete', DeviceDeleteView.as_view(), name='device_delete'),
     path('devices/<int:pk>/logs/<slug:period>/', DeviceLogsView.as_view(), name='device_logs'),
@@ -41,8 +46,12 @@ urlpatterns = [
 
     path('device-models/<int:pk>/firmware/create', DeviceModelFirmwareCreateView.as_view(), name='device_firmware_create'),
     path('device-models/<int:pk>/firmware/<int:fw_pk>/delete', DeviceModelFirmwareDeleteView.as_view(), name='device_firmware_delete'),
-    path('device-models/<int:pk>/firmware/<int:fw_pk>/update', DeviceModelDetailView.as_view(), name='device_firmware_update'),
+
+    path('device-models/<int:pk>/data-model/create', DataModelCreateView.as_view(), name='device_data-model_create'),
+    path('device-models/<int:pk>/data-model/<int:dm_pk>/delete', DataModelDeleteView.as_view(), name='device_data-model_delete'),
+    path('device-models/<int:pk>/data-model/<int:dm_pk>/update', DataModelUpdateView.as_view(), name='device_data-model_update'),
 
     path('chart/',  ChartView.as_view(), name='chart'),
+    path('api/params/',  get_devices_params, name='get_params'),
 
 ]

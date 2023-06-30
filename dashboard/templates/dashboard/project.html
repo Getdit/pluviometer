@@ -1,6 +1,6 @@
 {% extends "main.html" %} {% block content %}{% load bootstrap_icons %}
     <section class="container-fluid ps-4 pe-4 mt-5">
-        <div class="w-50">
+        <div class="">
             <div class="">
                 <div class="d-flex align-items-center mb-3">
                     <span class="cursor-pointer"
@@ -12,11 +12,14 @@
                 </p>
             </div>
 
-            <div>
-                Aqui será exibidos os gráficos
-            </div>
+            <div class="row">
+                {% for device in object.device_set.all %}
+                    <div id="plotly-chart{{ device.id }}" class="col-md-6 col-sm-12"></div>
 
-            <div class="mt-5">
+                {% endfor %}
+            </div>
+            <div class="row">
+            <div class="col-5 mt-5">
                 <div class="w-100 d-flex justify-content-between pb-2">
                     <h2 class="fs-4">Sensores</h2>
                     <a
@@ -37,8 +40,8 @@
                     {% endfor %}
                 </ol>
             </div>
-
-            <div class="mt-5">
+            <div class="col-6"></div>
+            <div class="col-5 mt-5">
                 <div class="w-100 d-flex justify-content-between pb-2">
                     <h2 class="fs-4">Bolsistas</h2>
                     <a
@@ -59,7 +62,8 @@
                     {% endfor %}
                 </ol>
             </div>
-            <div class="mt-5">
+            <div class="col-6"></div>
+            <div class="col-5 mt-5">
                 <div class="w-100 d-flex justify-content-between pb-2">
                     <h2 class="fs-4">Alertas</h2>
                     <a
@@ -80,12 +84,23 @@
                     {% endfor %}
                 </ol>
             </div>
+            </div>
         </div>
     </section>
 
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
     <script>
         function goBack() {
-            window.history.back();
+            window.location = "{% url 'dashboard:project_list' %}";
         }
+
+        {% for device in object.device_set.all %}
+          var plot_data{{ device.id }} = JSON.parse("{{ device.plot_json | safe }}");
+          Plotly.newPlot("plotly-chart{{ device.id }}", plot_data{{ device.id }}.data,plot_data{{ device.id }}.layout);
+
+        {% endfor %}
+
     </script>
 {% endblock content %}

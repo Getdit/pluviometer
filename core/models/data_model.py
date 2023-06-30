@@ -10,3 +10,15 @@ class DataModel(models.Model):
     reference_tag = models.CharField(
         max_length=30, verbose_name="Tag de referência")
 
+    class Meta:
+        verbose_name = "Modelo de dado"
+        verbose_name_plural = "Modelos de dado"
+
+    def __str__(self):
+        return self.name
+
+    def get_last_value(self, param, device):
+        return self.data_set.filter(
+            model=self,
+            log__device=device
+        ).last().value

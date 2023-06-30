@@ -9,10 +9,18 @@
     </div>
     <div class="d-flex align-items-center">
         {% if user.is_authenticated %}
-            {% comment %} <a style="width: 125px"
+            <a style="width: 125px"
+                    href="{% url 'dashboard:map' %}"
+                    role="button"
+                    class="fs-6 btn btn-light me-4" > Mapa </a>
+            <a style="width: 125px"
+                    href="{% url 'dashboard:location_list' %}"
+                    role="button"
+                    class="fs-6 btn btn-light me-4" > Locais </a>
+            <a style="width: 125px"
                     href="{% url 'dashboard:devices_list' %}"
                     role="button"
-                    class="fs-6 btn btn-light me-4" > Dispositivos </a> {% endcomment %}
+                    class="fs-6 btn btn-light me-4" > Dispositivos </a>
             <a style="width: 125px"
                     href="{% url 'dashboard:device_models_list' %}"
                     role="button"
@@ -21,6 +29,10 @@
                     href="{% url 'dashboard:project_list' %}"
                     role="button"
                     class="fs-6 btn btn-light me-4" > Projetos </a>
+            <a style="width: 125px"
+                    href="{% url 'account_logout' %}"
+                    role="button"
+                    class="fs-6 btn btn-light me-4" > Sair </a>
         {% else %}
             <a
                     style="width: 125px"

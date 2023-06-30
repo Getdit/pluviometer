@@ -1,8 +1,12 @@
+crispy-bootstrap5
 Django~=4.1.7
 django-allauth
 django-bootstrap5
+django-bootstrap-v5
 django-bootstrap-icons
+django-crispy-forms
 django-extensions
+django-jazzmin
 django-pwa
 paho-mqtt
 plotly

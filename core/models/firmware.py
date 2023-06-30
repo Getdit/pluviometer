@@ -12,3 +12,8 @@ class Firmware(models.Model):
     model = models.ForeignKey("core.DeviceModel", on_delete=models.CASCADE, verbose_name="Modelo")
 
     created_at = models.DateTimeField(auto_now=True, blank=True)
+
+    class Meta:
+        verbose_name = "Firmware"
+        verbose_name_plural = "Firmwares"
+        ordering = ["-version"]
