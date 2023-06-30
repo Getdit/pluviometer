@@ -6,6 +6,7 @@
                       onclick="goBack()">{% bs_icon 'arrow-left' size='1.5em' color='#000' %}</span>
                 <h4 class="ms-3">Bolsistas do ProjetoX</h4>
             </div>
+            {% if user.profile.is_researcher %}
             <button
                     onclick="changeModalTitle('Novo bolsista')"
                     type="button"
@@ -15,6 +16,7 @@
             >
                 {% bs_icon 'plus' size='1.2em' %}<span class="ps-1">Novo bolsista</span>
             </button>
+            {% endif %}
         </div>
         <div class="row mt-4">
             <div class="col-12">
@@ -32,8 +34,9 @@
                             <td>{{ user.owner.get_full_name }}</td>
                             <td>{{ user.owner.email }}</td>
                             <td>
+                                {% if user.profile.is_researcher %}
                                 <button
-                                        onclick="changeDeleteModalURL('{% url 'dashboard:project_user_remove' project.id user.owner.id %}')"
+                                        onclick="changeDeleteModalURL('{% url 'dashboard:project_user_remove' project user.owner.id %}')"
                                         type="button"
                                         style="
                         --bs-btn-padding-y: 0.25rem;
@@ -46,6 +49,7 @@
                                 >
                                     {% bs_icon 'trash' size='1.2em' %}Remover
                                 </button>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -53,7 +57,7 @@
                 </table>
             </div>
         </div>
-
+        {% if user.profile.is_researcher %}
         {% comment %} Delete Modal {% endcomment %}
         <div
                 class="modal fade"
@@ -142,11 +146,14 @@
                     </form>
                 </div>
             </div>
+
+        </div>
+        {% endif %}
     </section>
 
     <script>
         function goBack() {
-            window.history.back();
+            window.location = "{% url 'dashboard:project_detail' project %}";
         }
 
         function changeModalTitle(title) {

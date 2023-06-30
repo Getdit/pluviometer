@@ -11,5 +11,9 @@ class Profile(models.Model):
 
     owner = models.OneToOneField('auth.User', on_delete=models.CASCADE, verbose_name="Usuário")
 
+    class Meta:
+        verbose_name = "Perfil"
+        verbose_name_plural = "Perfis"
+
     def get_full_name(self):
         return self.owner.get_full_name()

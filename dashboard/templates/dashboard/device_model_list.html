@@ -1,7 +1,7 @@
 {% extends "main.html" %} {% block content %} {% load bootstrap_icons %}
     <section class="container-fluid ps-4 pe-4 mt-5">
         <div class="d-flex align-items-center justify-content-between mb-3">
-            <div class="d-flex">                
+            <div class="d-flex">
                 <h4>Todos os modelos de dispositivos</h4>
             </div>
             <button
@@ -13,6 +13,13 @@
             >
                 {% bs_icon 'plus' size='1.2em' %}<span class="ps-1">Novo modelo de dispositivo</span>
             </button>
+        </div>
+        <div style="max-width: 300px">
+            <form action="" style="display: flex">
+                <input type="text" class="form-control" name="search" value="{{ search }}" placeholder="Nome"> &nbsp;&nbsp;
+                <button type="submit" class="btn btn-success">{% bs_icon 'search' size='1.2em' %}<span class="ps-1">
+                </button>
+            </form>
         </div>
 
 
@@ -39,30 +46,19 @@
                                 {% bs_icon 'pencil-square' size='1.2em' %}Ver
                             </a>
                             <button
-                                    onclick="changeModalTitle('Editando sensor')"
+                                    onclick="deleteSensorModalForm('{% url 'dashboard:device_models_delete' model.pk %}')"
                                     type="button"
                                     style="
                                           --bs-btn-padding-y: 0.25rem;
                                           --bs-btn-padding-x: 0.5rem;
                                           --bs-btn-font-size: 0.75rem;
                                         "
-                                    class="btn btn-success me-2"
+                                    class="btn btn-danger me-2"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#sensorModal"
-                            >
-                                {% bs_icon 'pencil-square' size='1.2em' %}Editar
-                            </button>
-                            <a
-                                    href="{% url 'dashboard:device_models_delete' model.pk %}"                                                                        
-                                    style="
-                                        --bs-btn-padding-y: 0.25rem;
-                                        --bs-btn-padding-x: 0.5rem;
-                                        --bs-btn-font-size: 0.75rem;
-                                        "
-                                    class="btn btn-danger"   
+                                    data-bs-target="#deleteSensorModal"
                             >
                                 {% bs_icon 'trash' size='1.2em' %}Deletar
-                          </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -70,6 +66,46 @@
                 Nenhum dispositivo encontrado
             {% endfor %}
         </div>
+
+        {% comment %} Delete Modal {% endcomment %}
+        <div
+                class="modal fade"
+                id="deleteSensorModal"
+                tabindex="-1"
+                aria-labelledby="deleteSensorModalLabel"
+                aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="deleteSensorModalLabel">
+                            Tem certeza que deseja deletar o dispositivo?
+                        </h1>
+                        <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Ao deletar o dispositivo, todas as leituras relacionadas a ele serão apagadas.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="deleteSensorModalForm" class="w-100" method="post" action="">
+                            {% csrf_token %}
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Fechar
+                            </button>
+                            <button type="submit" class="btn btn-primary">Confirmar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         {% comment %} Modal {% endcomment %}
         <div
@@ -80,7 +116,7 @@
                 aria-hidden="true"
         >
             <div class="modal-dialog">
-                <div class="modal-content">                    
+                <div class="modal-content">
                     <form class="w-100" method="POST" action="{% url 'dashboard:device_models_create' %}">
                         {% csrf_token %}
                         <div class="modal-header">
@@ -104,7 +140,7 @@
                                         name="name"
                                         placeholder="Nome do modelo"
                                         required
-                                />                            
+                                />
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -129,6 +165,10 @@
 
         function changeModalTitle(title) {
             document.getElementById('sensorModalLabel').innerText = title;
+        }
+
+        function deleteSensorModalForm(url) {
+            document.getElementById('deleteSensorModalForm').action = url;
         }
     </script>
 {% endblock content %}

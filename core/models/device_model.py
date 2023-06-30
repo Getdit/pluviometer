@@ -4,6 +4,10 @@ from django.db import models
 class DeviceModel(models.Model):
     name = models.CharField(max_length=30, verbose_name="Nome")
 
+    class Meta:
+        verbose_name = "Modelo de dispositivo"
+        verbose_name_plural = "Modelos de dispositivo"
+
     def __str__(self):
         return self.name
 

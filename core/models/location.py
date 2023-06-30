@@ -15,6 +15,10 @@ class Location(models.Model):
 
     radius = models.IntegerField(verbose_name="Raio de cobertura (m)", default=1000)
 
+    class Meta:
+        verbose_name = "Local"
+        verbose_name_plural = "Locais"
+
     def __str__(self):
         return self.name
 

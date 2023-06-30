@@ -1,5 +1,5 @@
 from django import forms
-from core.models import Alert
+from core.models import Alert, Device, Location
 from accounts.models import Profile
 
 
@@ -25,3 +25,19 @@ class AssignDeviceProjectForm(forms.Form):
     def clean_profile(self):
         self.errors
         return self.cleaned_data['mac']
+
+class UpdateDeviceForm(forms.ModelForm):
+    class Meta:
+        model = Device
+        fields = ["mac", "model", "location", "latitude", "longitude"]
+
+
+class LocationForm(forms.ModelForm):
+    class Meta:
+        model = Location
+        fields = ["name", "description", "alert_instructions", "address", "latitude", "longitude", "radius"]
+
+class CreateDeviceForm(forms.ModelForm):
+    class Meta:
+        model = Device
+        exclude = ["project", "last_call"]

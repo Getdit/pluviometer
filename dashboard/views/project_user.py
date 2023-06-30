@@ -26,7 +26,7 @@ class ProjectAssignUserView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         project = Project.objects.get(id=self.kwargs['pk'])
         if not self.request.user.profile.is_researcher:
-            raise Exception("User is not owner of project")
+            raise Exception("User is not owner a researcher")
 
         user = form.clean_profile()
         project.users.add(user)
