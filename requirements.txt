@@ -1,5 +1,6 @@
 crispy-bootstrap5
-Django~=4.1.7
+#Django~=4.1.7
+Django
 django-allauth
 django-bootstrap5
 django-bootstrap-v5
