@@ -1,6 +1,5 @@
 from django.http.response import HttpResponse
 from accounts.models import Profile
-from django.contrib.auth.models import RelatedObjectDoesNotExist
 
 def verifications_middleware(get_response):
 
