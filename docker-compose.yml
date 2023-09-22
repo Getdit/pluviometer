@@ -1,64 +1,10 @@
-version: '3'
-services:
-  db:
-    image: postgres
-    restart: unless-stopped
-    container_name: db
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=parth
-      - POSTGRES_PASSWORD=redhat
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-    networks:
-      - mynetwork
-  pgadmin:
-    image: "dpage/pgadmin4"
-    restart: unless-stopped
-    container_name: pgadmin
-    depends_on:
-      - db
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "devs@ufsc.com.br"
-      PGADMIN_DEFAULT_PASSWORD: "yAgYkSSPYDnaYsd"
-      PGADMIN_LISTEN_PORT: 8001
-    ports:
-      - "5050:8001"
-    networks:
-      - mynetwork
-  web:
+version: "3"
+services: 
+  server:
+    image: ubuntu:latest
     build: .
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --no-input && python manage.py runserver 0:8000"
-    restart: unless-stopped
-    container_name: web
-    volumes:
-      - .:/code
+    container_name: django-deployment
     ports:
-      - "8002:8000"
-      - "82:80"
-    depends_on:
-      - db
-      - elasticsearch
-    networks:
-      - mynetwork
-    ulimits:
-      nproc: 65535
-      nofile:
-        soft: 2048
-        hard: 2048
-  elasticsearch:
-    image: launcher.gcr.io/google/elasticsearch2
-    container_name: elasticsearch
-    ports:
-      - "9200:9200"
-    volumes:
-      - esdata:/usr/share/elasticsearch/data
-    networks:
-      - mynetwork
-volumes:
-  postgres-data:
-  esdata:
-    driver: local
-networks:
-  mynetwork:
-    driver: bridge
+      - '8004:22'
+      - '8005:80'
+      - '8006:443'
