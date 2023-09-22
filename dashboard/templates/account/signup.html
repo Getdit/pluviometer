@@ -31,6 +31,9 @@
           <div class="d-flex flex-column justify-content-center border-end ps-3 pe-5">
             <h1 class="pb-2 fw-bold">Criar conta</h1>
             <p>Crie a sua para obter acesso a mais funções da aplicação </p>
+              {% if form.errors %}
+                  {{ form.errors }}
+              {% endif %}
             <form method="POST" action="{% url 'account_signup' %}">
               {% csrf_token %}
               <div class="mb-3">
