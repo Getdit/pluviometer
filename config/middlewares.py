@@ -8,9 +8,9 @@ def verifications_middleware(get_response):
         user = request.user
         response = get_response(request)
 
-        if user.is_anonymous == False:
+        if user.is_anonymous == False and not user.is_superuser:
 
-            if ((not user.profile.projects) or user.profile.is_researcher) and not user.is_superuser:
+            if ((not user.profile.projects) or user.profile.is_researcher):
                 return HttpResponse('Opa, seu acesso não foi liberado.')
 
         return response
