@@ -36,17 +36,6 @@
               {% endif %}
             <form method="POST" action="{% url 'account_signup' %}">
               {% csrf_token %}
-              <div class="mb-3">
-                    <label for="name" class="form-label">Nome Completo:</label>
-                    <input
-                            type="name"
-                            name="login"
-                            class="form-control"
-                            id="name"
-                            placeholder="Seu nome"
-                            required
-                    />
-                </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">E-mail:</label>
                     <input
@@ -66,9 +55,20 @@
                     <label for="senha" class="form-label">Senha:</label>
                     <input
                             type="password"
-                            name="password"
+                            name="password1"
                             class="form-control"
                             id="senha"
+                            required
+                            placeholder="Sua senha"
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="senha" class="form-label">Senha:</label>
+                    <input
+                            type="password"
+                            name="password2"
+                            class="form-control"
+                            id="senha1"
                             required
                             placeholder="Sua senha"
                     />
