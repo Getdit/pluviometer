@@ -23,3 +23,4 @@ while flag:
         flag = False
     except:
         pass
+print("MQTT Client started")
