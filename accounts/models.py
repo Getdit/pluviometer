@@ -10,6 +10,7 @@ class Profile(models.Model):
     projects = models.ManyToManyField('core.Project', verbose_name="Projetos (como bolsista)", blank=True, related_name="users")
 
     owner = models.OneToOneField('auth.User', on_delete=models.CASCADE, verbose_name="Usuário")
+    active = models.BooleanField(default=False, verbose_name="Ativo")
 
     class Meta:
         verbose_name = "Perfil"
