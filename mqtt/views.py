@@ -1,6 +1,7 @@
 from core.models import Device
 
 import json
+from json.decoder import JSONDecodeError
 
 
 def receive_data(payload, topic):
@@ -9,16 +10,17 @@ def receive_data(payload, topic):
     device = Device.objects.get(mac=mac)
 
     if device:
-        print(payload)
-        message = json.loads(payload)
-        version = message["version"]
-        message.pop("version")
-        print(dir(device))
-        device.set_logs(message)
+        try:
+            message = json.loads(payload)
+            version = message["version"]
+            message.pop("version")
+            device.set_logs(message)
 
-        update_firmware_url = device.model.verify_firmware(version)
+            update_firmware_url = device.model.verify_firmware(version)
 
-        if update_firmware_url:
-            from .utils import client
-            topic = f"sensor/{mac.lower()}/in"
-            client.publish(topic, json.dumps({"update_url":update_firmware_url}))
+            if update_firmware_url:
+                from .utils import client
+                topic = f"sensor/{mac.lower()}/in"
+                client.publish(topic, json.dumps({"update_url":update_firmware_url}))
+        except JSONDecodeError:
+            print(f"DecodeError: {mac}")
