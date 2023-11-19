@@ -38,7 +38,7 @@ class Device(models.Model):
         return f"{self.location}: {self.model} - {self.mac} "
 
     def set_logs(self, data, dt_str:str =None):
-        if dt is None:
+        if dt_str is None:
             log = self.devicelog_set.create(device=self.id)
         else:
             dt = datetime.datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
