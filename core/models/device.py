@@ -51,6 +51,7 @@ class Device(models.Model):
                     model=model_data,
                     value=data[model_data.reference_tag]
                 )
+        print(f"LOG: {log} - {log.created_at} - {log.datalog_set.all()}")
 
         self.last_call = log.created_at
         self.save()

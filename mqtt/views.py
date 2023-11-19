@@ -19,6 +19,7 @@ def receive_data(payload, topic):
             if "datetime" in message.keys():
                 datetime = message["datetime"]
                 message.pop("datetime")
+                print(f"VERSÂO: {version}  DATETIME: {datetime}   MESSAGE: {message}")
             device.set_logs(message, datetime)
 
             update_firmware_url = device.model.verify_firmware(version)
