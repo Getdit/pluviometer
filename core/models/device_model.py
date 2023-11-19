@@ -13,7 +13,8 @@ class DeviceModel(models.Model):
 
     def verify_firmware(self, version):
         last_fw = self.firmware_set.all().order_by("-version").first()
-        if last_fw.version > version:
+
+        if (not last_fw is None) and last_fw.version > version:
             from core.models import TempURL
             temp_url = TempURL.objects.create(
                 path=last_fw.file.path

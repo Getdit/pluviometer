@@ -41,7 +41,7 @@ class Device(models.Model):
         if dt_str is None:
             log = self.devicelog_set.create(device=self.id)
         else:
-            dt = datetime.datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
+            dt = datetime.datetime.strptime(dt_str, "%Y-%m-%dT%H:%M:%S-%z")
             log = self.devicelog_set.create(device=self.id, created_at=dt)
 
         for model_data in self.model.datamodel_set.all():
