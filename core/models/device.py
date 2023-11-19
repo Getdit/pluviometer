@@ -35,8 +35,11 @@ class Device(models.Model):
     def __str__(self):
         return f"{self.location}: {self.model} - {self.mac} "
 
-    def set_logs(self, data):
-        log = self.devicelog_set.create(device=self.id)
+    def set_logs(self, data, datetime:str =None):
+        if datetime is None:
+            log = self.devicelog_set.create(device=self.id)
+        else:
+            log = self.devicelog_set.create(device=self.id, created_at=datetime)
 
         for model_data in self.model.datamodel_set.all():
             if model_data.reference_tag in data.keys():

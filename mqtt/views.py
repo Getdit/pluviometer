@@ -14,7 +14,9 @@ def receive_data(payload, topic):
             message = json.loads(payload)
             version = message["version"]
             message.pop("version")
-            device.set_logs(message)
+            datetime = message["datetime"]
+            message.pop("datetime")
+            device.set_logs(message, datetime)
 
             update_firmware_url = device.model.verify_firmware(version)
 
