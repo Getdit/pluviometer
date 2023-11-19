@@ -14,7 +14,7 @@ def verifications_middleware(get_response):
             Profile.objects.create(owner=user)
 
         if user.is_anonymous == False and not user.is_superuser:
-            if (not user.profile.active) or ((not user.profile.projects) or user.profile.is_researcher):
+            if (not user.profile.active) or ((not user.profile.is_researcher) and not user.profile.projects):
                 return HttpResponse('Opa, seu acesso não foi liberado.')
         return response
 
