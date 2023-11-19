@@ -5,6 +5,7 @@ from json.decoder import JSONDecodeError
 
 
 def receive_data(payload, topic):
+    print(payload, topic)
     mac = topic.split("/")[1].upper()
 
     device = Device.objects.get(mac=mac)
