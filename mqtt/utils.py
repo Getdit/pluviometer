@@ -12,6 +12,7 @@ def on_connect(mqtt_client, userdata, flags, rc):
             except:
                 pass
         for device in Device.objects.all():
+            print(f"sensor/{device.mac.upper()}/out")
             mqtt_client.subscribe(f"sensor/{device.mac.upper()}/out")
     else:
         raise NameError("MQTT Connect error: {}".format(rc))
