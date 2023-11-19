@@ -4,6 +4,8 @@ from django.utils.html import escapejs
 from django.utils import timezone
 import plotly.graph_objs as go
 
+import datetime
+
 class Device(models.Model):
     mac = models.CharField(max_length=30, verbose_name="MAC", unique=True)
     model = models.ForeignKey("core.DeviceModel", on_delete=models.CASCADE, verbose_name="Modelo")
@@ -35,11 +37,12 @@ class Device(models.Model):
     def __str__(self):
         return f"{self.location}: {self.model} - {self.mac} "
 
-    def set_logs(self, data, datetime:str =None):
-        if datetime is None:
+    def set_logs(self, data, dt_str:str =None):
+        if dt is None:
             log = self.devicelog_set.create(device=self.id)
         else:
-            log = self.devicelog_set.create(device=self.id, created_at=datetime)
+            dt = datetime.datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
+            log = self.devicelog_set.create(device=self.id, created_at=dt)
 
         for model_data in self.model.datamodel_set.all():
             if model_data.reference_tag in data.keys():
