@@ -72,7 +72,7 @@ class Device(models.Model):
 
             def __init__(self, *args, **kwargs):
                 super(UpdateDevice, self).__init__()
-                self.fields['graph_data_models'].queryset = self.instance.model.datamodel_set.all()
+                #self.fields['graph_data_models'].queryset = self.instance.model.datamodel_set.all()
 
         return UpdateDevice(instance=self)
 
