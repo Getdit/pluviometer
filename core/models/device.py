@@ -71,7 +71,7 @@ class Device(models.Model):
                 fields = ["mac", "model", "location", "latitude", "longitude", "graph_data_models"]
 
             def __init__(self, instance):
-                super(self).__init__()
+                super().__init__()
                 self.fields['graph_data_models'].queryset = instance.model.datamodel_set.all()
 
         return UpdateDevice(instance=self)
