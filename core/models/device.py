@@ -70,7 +70,7 @@ class Device(models.Model):
                 model = Device
                 fields = ["mac", "model", "location", "latitude", "longitude", "graph_data_models"]
 
-            def __init__(self):
+            def __init__(self, instance):
                 super().__init__()
                 self.fields['graph_data_models'].queryset = self.instance.model.datamodel_set.all()
 
