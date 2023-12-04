@@ -70,6 +70,10 @@ class Device(models.Model):
                 model = Device
                 fields = ["mac", "model", "location", "latitude", "longitude", "graph_data_models"]
 
+            def __init__(cls):
+                super().__init__()
+                cls.fields['graph_data_models'].queryset = cls.instance.model.datamodel_set.all()
+
         return UpdateDevice(instance=self)
 
     def plot_json(self):
