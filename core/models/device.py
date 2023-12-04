@@ -71,8 +71,8 @@ class Device(models.Model):
                 fields = ["mac", "model", "location", "latitude", "longitude", "graph_data_models"]
 
             def __init__(self, *args, **kwargs):
-                super(UpdateDevice, self).__init__()
-                #self.fields['graph_data_models'].queryset = self.instance.model.datamodel_set.all()
+                super(UpdateDevice, self).__init__(initial=kwargs.get('instance'), *args, **kwargs)
+                self.fields['graph_data_models'].queryset = self.instance.model.datamodel_set.all()
 
         return UpdateDevice(instance=self)
 
