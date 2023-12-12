@@ -14,9 +14,7 @@ def mqtt_message(request):
         ip = x_forwarded_for.split(',')[0]
     else:
         ip = request.META.get('REMOTE_ADDR')
-    print(f"IP: {ip}")
     if ip == '127.0.0.1':
-        print(request.POST, request.FILES, request.GET, request)
         receive_data(payload=request.POST.get('payload'), topic=request.POST.get('topic'))
     return HttpResponse()
 
@@ -26,7 +24,6 @@ def mqtt_get_devices(request):
         ip = x_forwarded_for.split(',')[0]
     else:
         ip = request.META.get('REMOTE_ADDR')
-    print(f"IP: {ip}")
     if ip == '127.0.0.1':
         return JsonResponse({"devices": [d.mac.upper() for d in Device.objects.all()]})
 
