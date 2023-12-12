@@ -1,9 +1,34 @@
 from core.models import Device
+from django.http.response import JsonResponse, HttpResponse
 
 import json
 from json.decoder import JSONDecodeError
+from django.views.decorators.csrf import csrf_exempt
 
 PRINT_DATA = False
+
+@csrf_exempt
+def mqtt_message(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    print(f"IP: {ip}")
+    if ip == '127.0.0.1':
+        print(request.POST, request.FILES, request.GET, request)
+        receive_data(payload=request.POST.get('payload'), topic=request.POST.get('topic'))
+    return HttpResponse()
+
+def mqtt_get_devices(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    print(f"IP: {ip}")
+    if ip == '127.0.0.1':
+        return JsonResponse({"devices": [d.mac.upper() for d in Device.objects.all()]})
 
 def receive_data(payload, topic):
     if PRINT_DATA:
