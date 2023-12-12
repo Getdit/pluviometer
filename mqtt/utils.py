@@ -27,7 +27,6 @@ def on_message(client, userdata, msg):
         except:
             print("Erro ao importar receive_data")
             pass
-    print(client, userdata, msg)
     receive_data(msg.payload.decode('utf-8'), msg.topic)
 
 try:
