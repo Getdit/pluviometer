@@ -4,7 +4,7 @@ from django.utils.html import escapejs
 from django.utils import timezone
 import plotly.graph_objs as go
 
-import datetime
+import os
 
 class Device(models.Model):
     mac = models.CharField(max_length=30, verbose_name="MAC", unique=True)
@@ -29,9 +29,12 @@ class Device(models.Model):
             self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
         r = super(Device, self).save()
-        from mqtt.utils import client
-        if client:
-            client.subscribe(f"sensor/{self.mac.lower()}/out")
+        # from mqtt.utils import client
+        # if client:
+        #     client.subscribe(f"sensor/{self.mac.lower()}/out")
+
+        os.system("sudo systemctl restart mqtt_manager.service")
+
         return r
 
     def __str__(self):
