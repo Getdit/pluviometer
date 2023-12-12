@@ -8,7 +8,7 @@ def receive_data(payload, topic):
     print(payload, topic)
     mac = topic.split("/")[1].upper()
 
-    device = Device.objects.get(mac=mac)
+    device = Device.objects.filter(mac=mac).first()
 
     if device:
         try:
