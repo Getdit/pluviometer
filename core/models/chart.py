@@ -47,7 +47,7 @@ class CHART_LABELS_TYPE(models.TextChoices):
     # AREA = 'area', 'Área'
 
 class ChartLabel(models.Model):
-    chart = models.ForeignKey('Chart', on_delete=models.CASCADE, verbose_name='Gráfico', related_name='data')
+    chart = models.ForeignKey('Chart', on_delete=models.CASCADE, verbose_name='Gráfico')
     name = models.CharField(max_length=255, verbose_name='Nome')
 
     type = models.CharField(max_length=255, verbose_name='Tipo', choices=CHART_LABELS_TYPE.choices)
