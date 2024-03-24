@@ -8,3 +8,4 @@ from .data_model import DataModel
 from .data import Data
 from .project import Project
 from .alert import Alert
+from .chart import Chart, ChartLabel

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DeviceModel, Device, Location, Firmware, DataModel, Alert,  Project
+from .models import DeviceModel, Device, Location, Firmware, DataModel, Alert,  Project, Chart, ChartLabel
 
 @admin.register(Device)
 class DeviceAdmin(admin.ModelAdmin):
@@ -33,3 +33,11 @@ class AlertAdmin(admin.ModelAdmin):
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ["name", "description"]
+
+@admin.register(Chart)
+class ChartAdmin(admin.ModelAdmin):
+    list_display = ["name", "description", "project"]
+
+@admin.register(ChartLabel)
+class ChartLabelAdmin(admin.ModelAdmin):
+    list_display = ["chart", "name", "type", "device", "datamodel"]
