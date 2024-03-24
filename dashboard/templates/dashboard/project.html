@@ -13,9 +13,11 @@
             </div>
 
             <div class="row">
+                {% for chart in object.chart_set.all %}
+                    <div id="plotly-chart-g-{{ chart.id }}" class="col-md-6 col-sm-12"></div>
+                {% endfor %}
                 {% for device in object.device_set.all %}
                     <div id="plotly-chart{{ device.id }}" class="col-md-6 col-sm-12"></div>
-
                 {% endfor %}
             </div>
             <div class="row">
@@ -95,6 +97,12 @@
         function goBack() {
             window.location = "{% url 'dashboard:project_list' %}";
         }
+
+        {% for chart in object.chart_set.all %}
+          var plot_data_g_{{ chart.id }} = JSON.parse("{{ chart.plot_json | safe }}");
+          Plotly.newPlot("plotly-chart-g-{{ chart.id }}", plot_data_g_{{ chart.id }}.data, plot_data_g_{{ chart.id }}.layout);
+
+        {% endfor %}
 
         {% for device in object.device_set.all %}
           var plot_data{{ device.id }} = JSON.parse("{{ device.plot_json | safe }}");

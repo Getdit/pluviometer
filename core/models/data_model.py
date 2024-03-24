@@ -15,7 +15,7 @@ class DataModel(models.Model):
         verbose_name_plural = "Modelos de dado"
 
     def __str__(self):
-        return self.name
+        return f"{self.model.name} - {self.name}"
 
     def get_last_value(self, param, device):
         return self.data_set.filter(
