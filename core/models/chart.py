@@ -66,7 +66,7 @@ class ChartLabel(models.Model):
         x_values = []
         y_values = []
 
-        for log in self.device.devicelog_set.filter(created_at__gte=(timezone.now() - timezone.timedelta(days=7))):
+        for log in self.device.devicelog_set.all(): #filter(created_at__gte=(timezone.now() - timezone.timedelta(days=7))):
             for data in log.datalog_set.filter(model=self.datamodel):
                 y_values.append(data.value)
                 x_values.append(log.created_at)
