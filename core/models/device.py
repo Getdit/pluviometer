@@ -48,6 +48,12 @@ class Device(models.Model):
         #     dt = datetime.datetime.strptime(dt_str, "%Y-%m-%dT%H:%M:%S-%z")
         #     log = self.devicelog_set.create(device=self.id, created_at=dt)
 
+        # Create a log with data and time as separated strings
+        # date = "21/03/2024"
+        # time = "12:00"
+        # dt = datetime.datetime.strptime(f"{date} {time}", "%d/%m/%Y %H:%M")
+        # log = self.devicelog_set.create(device=self.id, created_at=dt)
+
         for model_data in self.model.datamodel_set.all():
             if model_data.reference_tag in data.keys():
                 log.datalog_set.create(
