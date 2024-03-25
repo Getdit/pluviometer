@@ -16,9 +16,9 @@
                 {% for chart in object.charts.all %}
                     <div id="plotly-chart-g-{{ chart.id }}" class="col-md-6 col-sm-12"></div>
                 {% endfor %}
-<!--                {% for device in object.device_set.all %}-->
-<!--                    <div id="plotly-chart{{ device.id }}" class="col-md-6 col-sm-12"></div>-->
-<!--                {% endfor %}-->
+                {% for device in object.device_set.all %}
+                    <div id="plotly-chart{{ device.id }}" class="col-md-6 col-sm-12"></div>
+                {% endfor %}
             </div>
             <div class="row">
             <div class="col-5 mt-5">
