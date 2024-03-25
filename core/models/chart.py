@@ -25,7 +25,7 @@ class Chart(models.Model):
             traces.append(label.get_traces())
 
         # Configurar layout do gráfico
-        layout = go.Layout(title=f"Últimos 7 dias: {', '.join(labels)}",
+        layout = go.Layout(title=f"Dados tratados: {', '.join(labels)}",
                            xaxis_title="Data", yaxis_title="")
 
         # Criar a figura do gráfico com base no traço e layout criados anteriormente
