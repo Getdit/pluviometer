@@ -78,7 +78,7 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         print(1)
         try:
-            data = self.request.GET.get('data', "").split('_')
+            data = self.request.GET.get('data', "").split('_')[:-1]
             start_date = timezone.datetime.strptime(self.request.GET.get('start_date'), "%Y-%m-%d")
             end_date = timezone.datetime.strptime(self.request.GET.get('end_date'), "%Y-%m-%d")
         except:
