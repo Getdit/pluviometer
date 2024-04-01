@@ -108,13 +108,13 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
                 traces.append(go.Scatter(x=x_values, y=y_values, text="symbol", name=model.name))
             elif type_code == 1:
                 traces.append(go.Scatter(x=x_values, y=y_values, text="symbol", name=model.name))
-
+        print(5)
         layout = go.Layout(title=f"Gráfico gerado: {', '.join(labels)}",
                            xaxis_title="Data", yaxis_title="")
-
+        print(6)
         # Criar a figura do gráfico com base no traço e layout criados anteriormente
         fig = go.Figure(data=traces, layout=layout)
-
+        print(7)
         # Converter a figura para JSON para ser exibida na página da web
         context['main_graph'] = escapejs(fig.to_json())
         return context
