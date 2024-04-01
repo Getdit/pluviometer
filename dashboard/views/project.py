@@ -77,9 +77,11 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        data = self.request.GET.get('data').split('_')
+        data = self.request.GET.get('data', "").split('_')
         start_date = timezone.datetime.strptime(self.request.GET.get('start_date'), "%Y-%m-%d")
         end_date = timezone.datetime.strptime(self.request.GET.get('end_date'), "%Y-%m-%d")
+        if not data[0]:
+            return context
 
         traces = []
         labels = []

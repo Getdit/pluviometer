@@ -55,6 +55,11 @@
                 <button onclick="generate_chart()" class="btn btn-success mt-3">Gerar</button>
             </article>
         </div>
+        {%if main_graph %}
+        <div class="row">
+            <div id="main_graph" class="col-sm-12"></div>
+        </div>
+        {% endif %}
 
         <div class="row">
             {% for chart in object.charts.all %}
@@ -151,6 +156,10 @@
 
     {% endfor %}
 
+    {% if main_graph %}
+    var main_graph = JSON.parse("{{ main_graph }}");
+    Plotly.newPlot("main_graph", main_graph.data, main_graph.layout);
+    {% endif %}
 
 
 </script>
