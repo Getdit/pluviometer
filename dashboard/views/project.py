@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import escapejs
 
-from plotly.graph_objs import go
+import plotly.graph_objs as go
 
 from core.models import Project, DataModel, DeviceLog
 
