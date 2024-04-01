@@ -94,15 +94,18 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
 
             print(4, data)
             device_id, model_id, type_code =  map(int, item.split(';'))
+            print(4.1)
             model = DataModel.objects.get(pk=model_id)
 
             y_values = []
             x_values = []
-
+            print(4.2, DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date, created_at__lte=end_date))
             for log in DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date, created_at__lte=end_date):
+                print(4.3, log.datalog_set.filter(model=model))
                 for dl in log.datalog_set.filter(model=model):
                     y_values.append(dl.value)
                     x_values.append(log.created_at)
+            print(4.3)
             labels.append(model.name)
             if type_code == 0:
                 traces.append(go.Scatter(x=x_values, y=y_values, text="symbol", name=model.name))
