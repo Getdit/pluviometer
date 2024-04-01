@@ -29,8 +29,8 @@
 
                     <label for="chart_type">Tipo de gráfico</label>
                     <select name="chart_type" id="chart_type" class="select form-select ">
-                        <option value="0">Linha</option>
-                        <option value="1">Barra</option>
+                        <option value="0">Barra</option>
+                        <option value="1">Linha</option>
                     </select>
                 </article>
                 <article class="col-3">
@@ -52,7 +52,7 @@
             <div id="parameters" class="row"></div>
 
             <article class="col-3 mt-3">
-                <button class="btn btn-success mt-3">Gerar</button>
+                <button onclick="generate_chart()" class="btn btn-success mt-3">Gerar</button>
             </article>
         </div>
 
@@ -67,8 +67,10 @@
     </div>
 </section>
 
+{% endblock content %}
 
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% block extra_script %}
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <script>
     function goBack() {
@@ -85,26 +87,56 @@
         {% endfor %}
     };
 
-    parameters = {};
+    parameters_blocks = {};
+
+    parameters_names = [];
 
     function add_parameter() {
-        var data = document.getElementById("data_model").value;
-        var type = document.getElementById("chart_type").value;
-        counter++;
-        parameter_html = ´
-        <article id="parameter${counter}" class="col-12">
-            <p><b>Dado:</b> ${parameters_data[data]}</p>
-            <p><b>Tipo de gráfico:</b> ${type == '1'? 'Linha': 'Barra'}</p>
-            <button class="btn btn-danger" onclick="remove_parameter(${counter})">Remover</button>
-        </article>
-    ´;
+    var data = document.getElementById("data_model").value;
+    var type = document.getElementById("chart_type").value;
+
+    if (data in parameters_names) return;
+
+    counter++;
+    parameter_html = `
+    <article id="parameter${counter}" class="col-12" style="margin-top: 10px">
+        <p style="display: inline; margin-right: 20px;"><b>Dado:</b> ${parameters_data[data]}</p>
+        <p style="display: inline; margin-right: 20px;"><b>Tipo de gráfico:</b> ${type == '1'? 'Linha': 'Barra'}</p>
+        <button class="btn btn-danger" onclick="remove_parameter(${counter})" style="display: inline; margin-right: 30px;">Remover</button>
+    </article>
+    `;
         document.getElementById("parameters").innerHTML += parameter_html;
+
+        parameters_blocks[counter] = {
+            data: data,
+            type: type
+        };
+
+        parameters_names.push(data);
 
     }
 
     function remove_parameter(id) {
         document.getElementById("parameter" + id).remove();
+        delete parameters_blocks[id];
     }
+
+
+    function generate_chart() {
+        var start_date = document.getElementById("start_date").value;
+        var end_date = document.getElementById("end_date").value;
+        var content = "";
+
+        for (var key in parameters_blocks) {
+            var data = parameters_blocks[key].data;
+            var type = parameters_blocks[key].type;
+
+            content += data + ";" + type + "_";
+        }
+
+        window.location = "{% url 'dashboard:project_chart_detail' pk=object.id %}" + "?data=" + content + "&start_date=" + start_date + "&end_date=" + end_date;
+    }
+
 
     {% for chart in object.charts.all %}
     var plot_data_g_{{ chart.id }} = JSON.parse("{{ chart.plot_json | safe }}");
@@ -122,4 +154,4 @@
 
 
 </script>
-{% endblock content %}
+{% endblock %}
