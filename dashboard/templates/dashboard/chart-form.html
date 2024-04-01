@@ -1,0 +1,125 @@
+{% extends "main.html" %} {% block content %}{% load bootstrap_icons %}
+<section class="container-fluid ps-4 pe-4 mt-5">
+    <div class="">
+        <div class="">
+            <div class="d-flex align-items-center mb-3">
+                    <span class="cursor-pointer"
+                          onclick="goBack()">{% bs_icon 'arrow-left' size='1.5em' color='#000' %}</span>
+                <h4 class="ms-3">{{ object.name }}</h4>
+            </div>
+            <p class="pt-3 pb-4">
+                {{ object.description }}
+            </p>
+        </div>
+        <div class="row">
+            <h3>Montar gráfico</h3>
+
+            <div class="row">
+                <article class="col-6">
+                    <label for="data_model">Dado</label>
+                    <select name="data_model" id="data_model" class="select form-select ">
+                        {% for device in object.device_set.all %}
+                            {% for data in device.model.datamodel_set.all %}
+                                <option value="{{device.id}};{{data.id}}">{{ device }} | {{data.reference_tag}}</option>
+                            {% endfor %}
+                        {% endfor %}
+                    </select>
+                </article>
+                <article class="col-6">
+
+                    <label for="chart_type">Tipo de gráfico</label>
+                    <select name="chart_type" id="chart_type" class="select form-select ">
+                        <option value="0">Linha</option>
+                        <option value="1">Barra</option>
+                    </select>
+                </article>
+                <article class="col-3">
+                    <button class="btn btn-success mt-2 mb-2" onclick="add_parameter();">Adicionar parâmetro</button>
+                </article>
+                <div class="offset-9"></div>
+
+                <article class="col-6">
+                    <label for="data_model">Início</label>
+                    <input type="date" name="start_date" id="start_date" class="form-control">
+                </article>
+                <article class="col-6">
+
+                    <label for="chart_type">Fim</label>
+                    <input type="date" name="end_date" id="end_date" class="form-control">
+                </article>
+            </div>
+
+            <div id="parameters" class="row"></div>
+
+            <article class="col-3 mt-3">
+                <button class="btn btn-success mt-3">Gerar</button>
+            </article>
+        </div>
+
+        <div class="row">
+            {% for chart in object.charts.all %}
+            <div id="plotly-chart-g-{{ chart.id }}" class="col-md-6 col-sm-12"></div>
+            {% endfor %}
+            {% for device in object.device_set.all %}
+            <div id="plotly-chart{{ device.id }}" class="col-md-6 col-sm-12"></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script>
+    function goBack() {
+        window.location = "{% url 'dashboard:project_list' %}";
+    }
+
+    counter = 0;
+
+    parameters_data = {
+        {% for device in object.device_set.all %}
+            {% for data in device.model.datamodel_set.all %}
+                "{{device.id}};{{data.id}}": "{{ device }} | {{data.reference_tag}}",
+            {% endfor %}
+        {% endfor %}
+    };
+
+    parameters = {};
+
+    function add_parameter() {
+        var data = document.getElementById("data_model").value;
+        var type = document.getElementById("chart_type").value;
+        counter++;
+        parameter_html = ´
+        <article id="parameter${counter}" class="col-12">
+            <p><b>Dado:</b> ${parameters_data[data]}</p>
+            <p><b>Tipo de gráfico:</b> ${type == '1'? 'Linha': 'Barra'}</p>
+            <button class="btn btn-danger" onclick="remove_parameter(${counter})">Remover</button>
+        </article>
+    ´;
+        document.getElementById("parameters").innerHTML += parameter_html;
+
+    }
+
+    function remove_parameter(id) {
+        document.getElementById("parameter" + id).remove();
+    }
+
+    {% for chart in object.charts.all %}
+    var plot_data_g_{{ chart.id }} = JSON.parse("{{ chart.plot_json | safe }}");
+
+    Plotly.newPlot("plotly-chart-g-{{ chart.id }}", plot_data_g_{{ chart.id }}.data, plot_data_g_{{ chart.id }}.layout);
+    {% endfor %}
+
+
+    {% for device in object.device_set.all %}
+    var plot_data{{ device.id }} = JSON.parse("{{ device.plot_json }}");
+    Plotly.newPlot("plotly-chart{{ device.id }}", plot_data{{ device.id }}.data, plot_data{{ device.id }}.layout);
+
+    {% endfor %}
+
+
+
+</script>
+{% endblock content %}

@@ -2,7 +2,7 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 
-from core.models import Project
+from core.models import Project, DataModel
 
 class ProjectListView(LoginRequiredMixin, ListView):
     template_name = 'dashboard/projects.html'
@@ -65,3 +65,7 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
             return super().form_valid(form)
         else:
             return super().form_invalid(form)
+
+class ProjectChartFormView(LoginRequiredMixin, DetailView):
+    template_name = 'dashboard/chart-form.html'
+    model = Project
