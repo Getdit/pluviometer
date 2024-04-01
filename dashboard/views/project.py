@@ -103,7 +103,10 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
                     y_values.append(dl.value)
                     x_values.append(log.created_at)
             labels.append(model.name)
-            traces.append(go.Scatter(x=x_values, y=y_values, text="symbol", name=model.name))
+            if type_code == 0:
+                traces.append(go.Scatter(x=x_values, y=y_values, text="symbol", name=model.name))
+            elif type_code == 1:
+                traces.append(go.Scatter(x=x_values, y=y_values, text="symbol", name=model.name))
 
         layout = go.Layout(title=f"Gráfico gerado: {', '.join(labels)}",
                            xaxis_title="Data", yaxis_title="")
