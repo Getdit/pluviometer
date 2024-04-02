@@ -11,7 +11,11 @@
                     {{ object.description }}
                 </p>
             </div>
-
+            <br>
+            <a
+                class="btn btn-info"
+                href="{% url 'dashboard:project_chart_detail' pk=object.id %}"
+                style="--bs-btn-padding-x: 0.5rem; --bs-btn-font-size: 0.75rem">Gráficos</a>
             <div class="row">
                 {% for chart in object.charts.all %}
                     <div id="plotly-chart-g-{{ chart.id }}" class="col-md-6 col-sm-12"></div>
