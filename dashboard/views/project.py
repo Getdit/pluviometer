@@ -109,6 +109,8 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
 
             y_values = []
             x_values = []
+            device_data = DeviceLog.objects.filter(device_id=device_id).count()
+            print(1, device_data)
 
             if start_date and not end_date:
                 device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date)
