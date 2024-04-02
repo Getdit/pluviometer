@@ -127,7 +127,6 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
             print(f"Filtered data: {device_data.count()}")
 
             for log in device_data:
-                print(f"Log: {log} DATA: {log.datalog_set.filter(model=model).count()}")
                 for dl in log.datalog_set.filter(model=model):
                     y_values.append(dl.value)
                     x_values.append(log.created_at)
