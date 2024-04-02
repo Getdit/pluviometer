@@ -110,7 +110,6 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
             y_values = []
             x_values = []
             device_data = DeviceLog.objects.filter(device_id=device_id).count()
-            print(f"Device ({device_id}) data: {device_data}")
 
             if start_date and not end_date:
                 device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date)
@@ -124,15 +123,12 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
             else:
                 device_data = DeviceLog.objects.filter(device_id=device_id)
 
-            print(f"Filtered data: {device_data.count()}")
-
             for log in device_data:
                 for dl in log.datalog_set.filter(model=model):
                     y_values.append(dl.value)
                     x_values.append(log.created_at)
             labels.append(model.name)
 
-            print(9, type_code, x_values, y_values)
             if type_code == 0:
                 traces.append(go.Bar(x=x_values, y=y_values, text="symbol", name=model.name))
             elif type_code == 1:
