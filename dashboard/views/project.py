@@ -99,7 +99,7 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
         print(6, data)
         context['main_graph'] = ""
 
-        if not data[0]:
+        if not data:
             return context
         print(7)
         traces = []
