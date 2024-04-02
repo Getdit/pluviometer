@@ -151,13 +151,13 @@
 
 
     {% for device in object.device_set.all %}
-    var plot_data{{ device.id }} = JSON.parse("{{ device.plot_json }}");
+    var plot_data{{ device.id }} = JSON.parse("{{ device.plot_json | safe }}");
     Plotly.newPlot("plotly-chart{{ device.id }}", plot_data{{ device.id }}.data, plot_data{{ device.id }}.layout);
 
     {% endfor %}
 
     {% if main_graph %}
-    var main_graph = JSON.parse("{{ main_graph }}");
+    var main_graph = JSON.parse("{{ main_graph | safe}}");
     Plotly.newPlot("main_graph", main_graph.data, main_graph.layout);
     {% endif %}
 
