@@ -76,48 +76,63 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(1)
         try:
             data = self.request.GET.get('data', "").split('_')[:-1]
-            start_date = timezone.datetime.strptime(self.request.GET.get('start_date'), "%Y-%m-%d")
-            end_date = timezone.datetime.strptime(self.request.GET.get('end_date'), "%Y-%m-%d")
+
+            start_date_str = self.request.GET.get('start_date')
+            end_date_str = self.request.GET.get('end_date')
+            start_date = None
+            end_date = None
+
+            if start_date_str:
+                start_date = timezone.datetime.strptime(start_date_str, "%Y-%m-%d")
+
+            if end_date_str:
+                end_date = timezone.datetime.strptime(end_date_str, "%Y-%m-%d")
         except:
             return context
-        print(2)
+
         if not data[0]:
             return context
-        print(3)
+
         traces = []
         labels = []
 
         for item in data:
-
-            print(4, data)
             device_id, model_id, type_code =  map(int, item.split(';'))
-            print(4.1)
             model = DataModel.objects.get(pk=model_id)
 
             y_values = []
             x_values = []
-            print(4.2, DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date, created_at__lte=end_date))
-            for log in DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date, created_at__lte=end_date):
-                print(4.3, log.datalog_set.filter(model=model))
+
+            if start_date and not end_date:
+                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date)
+
+            elif (not start_date) and end_date:
+                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__lte=end_date)
+
+            elif start_date and end_date:
+                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date, created_at__lte=end_date)
+
+            else:
+                device_data = DeviceLog.objects.filter(device_id=device_id)
+
+            for log in device_data:
                 for dl in log.datalog_set.filter(model=model):
                     y_values.append(dl.value)
                     x_values.append(log.created_at)
-            print(4.3)
             labels.append(model.name)
             if type_code == 0:
                 traces.append(go.Bar(x=x_values, y=y_values, text="symbol", name=model.name))
             elif type_code == 1:
                 traces.append(go.Scatter(x=x_values, y=y_values, text="symbol", name=model.name))
-        print(5)
+
         layout = go.Layout(title=f"Gráfico gerado: {', '.join(labels)}",
                            xaxis_title="Data", yaxis_title="")
-        print(6)
+
         # Criar a figura do gráfico com base no traço e layout criados anteriormente
         fig = go.Figure(data=traces, layout=layout)
-        print(7)
+
         # Converter a figura para JSON para ser exibida na página da web
         context['main_graph'] = escapejs(fig.to_json())
         return context
