@@ -109,19 +109,18 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
 
             y_values = []
             x_values = []
-            device_data = DeviceLog.objects.filter(device_id=device_id).count()
 
             if start_date and not end_date:
-                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date)
+                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date).order_by('created_at')
 
             elif (not start_date) and end_date:
-                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__lte=end_date)
+                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__lte=end_date).order_by('created_at')
 
             elif start_date and end_date:
-                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date, created_at__lte=end_date)
+                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date, created_at__lte=end_date).order_by('created_at')
 
             else:
-                device_data = DeviceLog.objects.filter(device_id=device_id)
+                device_data = DeviceLog.objects.filter(device_id=device_id).order_by('created_at')
 
             for log in device_data:
                 for dl in log.datalog_set.filter(model=model):
