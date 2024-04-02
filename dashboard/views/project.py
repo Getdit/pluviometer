@@ -89,7 +89,8 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
 
             if end_date_str:
                 end_date = timezone.datetime.strptime(end_date_str, "%Y-%m-%d")
-        except:
+        except Exception as e:
+            print(e)
             return context
 
         if not data[0]:
