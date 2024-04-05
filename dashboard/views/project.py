@@ -142,7 +142,7 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
                 elif type_code == 1:
                     traces.append(go.Scatter(x=x_values, y=y_values, text="symbol", name=model.name))
 
-            layout = go.Layout(title=f"{charts[chart_id]['data']}: {', '.join(labels)}",
+            layout = go.Layout(title=f"{charts[chart_id]['title']}: {', '.join(labels)}",
                                xaxis_title="Data", yaxis_title="")
 
             # Criar a figura do gráfico com base no traço e layout criados anteriormente
