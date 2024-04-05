@@ -12,61 +12,68 @@
             </p>
         </div>
         <div class="row">
-            <h3>Montar gráfico</h3>
+            <h3>Montar gráficos</h3>
 
-            <div class="row">
-                <article class="col-6">
-                    <label for="data_model">Dado</label>
-                    <select name="data_model" id="data_model" class="select form-select ">
-                        {% for device in object.device_set.all %}
+            <section style="border: 1px solid black; border-radius: 20px; padding: 10px 15px">
+                <div class="row">
+                    <article class="col-6">
+                        <label for="data_model">Dado</label>
+                        <select name="data_model" id="data_model" class="select form-select ">
+                            {% for device in object.device_set.all %}
                             {% for data in device.model.datamodel_set.all %}
-                                <option value="{{device.id}};{{data.id}}">{{ device }} | {{data.reference_tag}}</option>
+                            <option value="{{device.id}};{{data.id}}">{{ device }} | {{data.reference_tag}}</option>
                             {% endfor %}
-                        {% endfor %}
-                    </select>
-                </article>
-                <article class="col-6">
+                            {% endfor %}
+                        </select>
+                    </article>
+                    <article class="col-6">
 
-                    <label for="chart_type">Tipo de gráfico</label>
-                    <select name="chart_type" id="chart_type" class="select form-select ">
-                        <option value="0">Barra</option>
-                        <option value="1">Linha</option>
-                    </select>
-                </article>
-                <article class="col-3">
-                    <button class="btn btn-success mt-2 mb-2" onclick="add_parameter();">Adicionar parâmetro</button>
-                </article>
-                <div class="offset-9"></div>
+                        <label for="chart_type">Tipo de gráfico</label>
+                        <select name="chart_type" id="chart_type" class="select form-select ">
+                            <option value="0">Barra</option>
+                            <option value="1">Linha</option>
+                        </select>
+                    </article>
+                    <article class="col-3">
+                        <button class="btn btn-success mt-2 mb-2" onclick="add_parameter();">Adicionar parâmetro
+                        </button>
+                    </article>
+                    <div class="offset-9"></div>
 
-                <article class="col-6">
-                    <label for="data_model">Início</label>
-                    <input type="date" name="start_date" id="start_date" class="form-control">
-                </article>
-                <article class="col-6">
+                    <article class="col-6">
+                        <label for="data_model">Início</label>
+                        <input type="date" name="start_date" id="start_date" class="form-control">
+                    </article>
+                    <article class="col-6">
 
-                    <label for="chart_type">Fim</label>
-                    <input type="date" name="end_date" id="end_date" class="form-control">
-                </article>
-            </div>
+                        <label for="chart_type">Fim</label>
+                        <input type="date" name="end_date" id="end_date" class="form-control">
+                    </article>
+                    <article class="col-12">
+                        <label for="chart_type">Título</label>
+                        <input type="text" name="title" id="title" class="form-control">
+                    </article>
 
-            <div id="parameters" class="row"></div>
+                </div>
+
+                <div id="parameters" class="row"></div>
+                <article class="col-3 mt-3">
+                    <button onclick="add_chart()" class="btn btn-success mt-3">Adicionar gráfico</button>
+                </article>
+            </section>
+            <div id="charts" class="row"></div>
 
             <article class="col-3 mt-3">
-                <button onclick="generate_chart()" class="btn btn-success mt-3">Gerar</button>
+                <button onclick="generate_chart()" class="btn btn-success mt-3">Gerar gráficos</button>
+            </article>
+
+            <article class="col-3 mt-3 offset-9">
+                <button onclick="toggle_mode()" class="btn btn-success mt-3">Visualização</button>
             </article>
         </div>
-        {%if main_graph %}
-        <div class="row">
-            <div id="main_graph" class="col-sm-12"></div>
-        </div>
-        {% endif %}
-
-        <div class="row">
-            {% for chart in object.charts.all %}
-            <div id="plotly-chart-g-{{ chart.id }}" class="col-md-6 col-sm-12"></div>
-            {% endfor %}
-            {% for device in object.device_set.all %}
-            <div id="plotly-chart{{ device.id }}" class="col-md-6 col-sm-12"></div>
+        <div id="plots" class="row">
+            {% for chart in charts %}
+            <div id="plotly-chart{{ chart.id }}" class="pc col-md-6 col-sm-12"></div>
             {% endfor %}
         </div>
     </div>
@@ -78,6 +85,19 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <script>
+    var grid = true;
+    function toggle_mode() {
+        if (grid) {
+            grid = false;
+            $(".pc").removeClass("col-md-6");
+        } else {
+            grid = true;
+            $(".pc").addClass("col-md-6");
+
+        }
+    }
+
+
     function goBack() {
         window.location = "{% url 'dashboard:project_list' %}";
     }
@@ -91,6 +111,9 @@
             {% endfor %}
         {% endfor %}
     };
+
+    graphics = {}
+    chart_id = 0;
 
     parameters_blocks = {};
 
@@ -126,41 +149,75 @@
         delete parameters_blocks[id];
     }
 
+    function add_chart(){
+        chart_id++;
 
-    function generate_chart() {
         var start_date = document.getElementById("start_date").value;
         var end_date = document.getElementById("end_date").value;
-        var content = "";
+        var title = document.getElementById("title").value;
+        var content = [];
+        var parmams = ""
 
         for (var key in parameters_blocks) {
-            var data = parameters_blocks[key].data;
-            var type = parameters_blocks[key].type;
+            content.push({
+                data: parameters_blocks[key].data,
+                type: parameters_blocks[key].type
+            })
 
-            content += data + ";" + type + "_";
+            parmams += `${parameters_data[parameters_blocks[key].data]} | ${parameters_blocks[key].type == '1'? 'Linha': 'Barra'} <br>`;
         }
 
-        window.location = "{% url 'dashboard:project_chart_detail' pk=object.id %}" + "?data=" + content + "&start_date=" + start_date + "&end_date=" + end_date;
+        graphics[chart_id] = {
+            title: title,
+            data: content,
+            start_date: start_date,
+            end_date: end_date
+        }
+
+        var chart_html = `
+        <article id="chart${chart_id}" class="col-12" style="margin-top: 10px">
+            <h3>${title}</h3>
+            <p style="display: inline; margin-right: 20px;"><b>Início:</b> ${start_date || "---"}</p>
+            <p style="display: inline; margin-right: 20px;"><b>Fim:</b> ${end_date || "---"}</p>
+            <p style="display: inline; margin-right: 20px;"><b>Parâmetros:</b> <br>${parmams}</p>
+            <button class="btn btn-danger" onclick="remove_chart(${chart_id})" style="display: inline; margin-right: 30px;">Remover</button>
+        </article>
+    `;
+        document.getElementById("charts").innerHTML += chart_html;
+
+        parameters_blocks = {};
+        parameters_names = [];
+    }
+
+    function remove_chart(id) {
+        document.getElementById("chart" + id).remove();
+        delete graphics[id];
     }
 
 
-    {% for chart in object.charts.all %}
-    var plot_data_g_{{ chart.id }} = JSON.parse("{{ chart.plot_json | safe }}");
+    function generate_chart() {
+        $.ajax(
+            {
+                url: "{% url 'dashboard:project_chart_detail' pk=object.id %}",
+                type: "POST",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    charts: JSON.stringify(graphics),
+                },
+                success: function (data) {
+                    $("#plots").html("");
+                    for (var key in data) {
+                        console.log(data[key]);
+                        var plot_data = data[key];
+                        var plot_html = `<div id="plotly-chart-${key}" class="pc ${grid ? "col-md-6" : ""} col-sm-12"></div>`;
+                        $("#plots").append(plot_html);
+                        Plotly.newPlot("plotly-chart-" + key, plot_data.data, plot_data.layout);
+                    }
+                }
+            }
+        );
 
-    Plotly.newPlot("plotly-chart-g-{{ chart.id }}", plot_data_g_{{ chart.id }}.data, plot_data_g_{{ chart.id }}.layout);
-    {% endfor %}
-
-
-    {% for device in object.device_set.all %}
-    var plot_data{{ device.id }} = JSON.parse("{{ device.plot_json | safe }}");
-    Plotly.newPlot("plotly-chart{{ device.id }}", plot_data{{ device.id }}.data, plot_data{{ device.id }}.layout);
-
-    {% endfor %}
-
-    {% if main_graph %}
-    var main_graph = JSON.parse("{{ main_graph | safe}}");
-    Plotly.newPlot("main_graph", main_graph.data, main_graph.layout);
-    {% endif %}
-
+    }
 
 </script>
 {% endblock %}

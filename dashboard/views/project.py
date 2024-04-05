@@ -3,10 +3,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import escapejs
+from django.shortcuts import Http404
+from django.http import JsonResponse
 
 import plotly.graph_objs as go
 
 from core.models import Project, DataModel, DeviceLog
+
+import json
 
 class ProjectListView(LoginRequiredMixin, ListView):
     template_name = 'dashboard/projects.html'
@@ -73,72 +77,78 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
 class ProjectChartFormView(LoginRequiredMixin, DetailView):
     template_name = 'dashboard/chart-form.html'
     model = Project
+    def post(self, *args, **kwargs):
+        charts = json.loads(self.request.POST.get('charts'))
+        print(charts)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        response = {}
 
-        try:
-            data = self.request.GET.get('data', "").split('_')[:-1]
+        for chart_id in charts.keys():
+            try:
+                data = charts[chart_id]['data']
 
-            start_date_str = self.request.GET.get('start_date')
-            end_date_str = self.request.GET.get('end_date')
-            start_date = None
-            end_date = None
+                start_date_str = charts[chart_id]['start_date']
+                end_date_str = charts[chart_id]['end_date']
+                start_date = None
+                end_date = None
 
-            if start_date_str:
-                start_date = timezone.datetime.strptime(start_date_str, "%Y-%m-%d")
+                if start_date_str:
+                    start_date = timezone.datetime.strptime(start_date_str, "%Y-%m-%d")
 
-            if end_date_str:
-                end_date = timezone.datetime.strptime(end_date_str, "%Y-%m-%d")
+                if end_date_str:
+                    end_date = timezone.datetime.strptime(end_date_str, "%Y-%m-%d")
 
-        except Exception as e:
-            print(e)
-            return context
+            except Exception as e:
+                print(e)
+                raise Http404
 
-        context['main_graph'] = ""
+            if not data:
+                raise Http404
 
-        if not data:
-            return context
+            traces = []
+            labels = []
 
-        traces = []
-        labels = []
+            for item in data:
+                type_code = int(item["type"])
+                device_id, model_id = map(int, item["data"].split(";"))
+                model = DataModel.objects.get(pk=model_id)
 
-        for item in data:
-            device_id, model_id, type_code =  map(int, item.split(';'))
-            model = DataModel.objects.get(pk=model_id)
+                y_values = []
+                x_values = []
 
-            y_values = []
-            x_values = []
+                if start_date and not end_date:
+                    device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date).order_by(
+                        'created_at')
 
-            if start_date and not end_date:
-                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date).order_by('created_at')
+                elif (not start_date) and end_date:
+                    device_data = DeviceLog.objects.filter(device_id=device_id, created_at__lte=end_date).order_by(
+                        'created_at')
 
-            elif (not start_date) and end_date:
-                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__lte=end_date).order_by('created_at')
+                elif start_date and end_date:
+                    device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date,
+                                                           created_at__lte=end_date).order_by('created_at')
 
-            elif start_date and end_date:
-                device_data = DeviceLog.objects.filter(device_id=device_id, created_at__gte=start_date, created_at__lte=end_date).order_by('created_at')
+                else:
+                    device_data = DeviceLog.objects.filter(device_id=device_id).order_by('created_at')
 
-            else:
-                device_data = DeviceLog.objects.filter(device_id=device_id).order_by('created_at')
+                for log in device_data:
+                    for dl in log.datalog_set.filter(model=model):
+                        y_values.append(dl.value)
+                        x_values.append(log.created_at)
+                labels.append(model.name)
 
-            for log in device_data:
-                for dl in log.datalog_set.filter(model=model):
-                    y_values.append(dl.value)
-                    x_values.append(log.created_at)
-            labels.append(model.name)
+                if type_code == 0:
+                    traces.append(go.Bar(x=x_values, y=y_values, text="symbol", name=model.name))
+                elif type_code == 1:
+                    traces.append(go.Scatter(x=x_values, y=y_values, text="symbol", name=model.name))
 
-            if type_code == 0:
-                traces.append(go.Bar(x=x_values, y=y_values, text="symbol", name=model.name))
-            elif type_code == 1:
-                traces.append(go.Scatter(x=x_values, y=y_values, text="symbol", name=model.name))
+            layout = go.Layout(title=f"{charts[chart_id]['data']}: {', '.join(labels)}",
+                               xaxis_title="Data", yaxis_title="")
 
-        layout = go.Layout(title=f"Gráfico gerado: {', '.join(labels)}",
-                           xaxis_title="Data", yaxis_title="")
+            # Criar a figura do gráfico com base no traço e layout criados anteriormente
+            fig = go.Figure(data=traces, layout=layout)
 
-        # Criar a figura do gráfico com base no traço e layout criados anteriormente
-        fig = go.Figure(data=traces, layout=layout)
+            # Converter a figura para JSON para ser exibida na página da web
+            response[chart_id] = fig.to_json()
 
-        # Converter a figura para JSON para ser exibida na página da web
-        context['main_graph'] = escapejs(fig.to_json())
-        return context
+        return JsonResponse(response)
