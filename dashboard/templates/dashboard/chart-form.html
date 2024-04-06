@@ -214,7 +214,10 @@
 
                         console.log(plot_data.data);
                         console.log("-----------------------");
-                        console.log(plot_data.layout);
+                        console.log(plot_data.layout);console.log(plot_data.data);
+                        console.log("-----------------------");
+                        console.log(plot_data);
+                        console.log("-----------------------");
                         my_charts.push(Plotly.newPlot("plotly-chart-" + key, plot_data.data, plot_data.layout));
                     }
                 }
