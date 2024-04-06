@@ -64,7 +64,7 @@
             <div id="charts" class="row"></div>
 
             <article class="col-3 mt-3">
-                <button onclick="generate_chart()" class="btn btn-success mt-3">Gerar gráficos</button>
+                <button id="generate_button" onclick="generate_chart()" class="btn btn-success mt-3">Gerar gráficos</button>
             </article>
 
             <article class="col-3 mt-3 offset-9">
@@ -196,7 +196,18 @@
         delete graphics[id];
     }
 
+    function disable_gen_button() {
+        document.getElementById("generate_button").disabled = true;
+        document.getElementById("generate_button").innerHTML = "Trabalhando...";
+    }
+
+    function enable_gen_button() {
+        document.getElementById("generate_button").disabled = false;
+        document.getElementById("generate_button").innerHTML = "Gerar gráficos";
+    }
+
     function generate_chart() {
+        disable_gen_button();
         $.ajax(
             {
                 url: "{% url 'dashboard:project_chart_detail' pk=object.id %}",
@@ -217,6 +228,7 @@
                 }
             }
         );
+        enable_gen_button();
 
     }
 
