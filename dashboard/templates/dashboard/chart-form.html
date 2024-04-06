@@ -209,7 +209,7 @@
                     $("#plots").html("");
                     for (var key in data) {
                         my_charts.push(data[key]);
-                        var plot_data =  JSON.parse();
+                        var plot_data =  JSON.parse(data[key]);
                         var plot_html = `<div id="plotly-chart-${key}" class="pc ${grid ? "col-md-6" : ""} col-sm-12"></div>`;
                         $("#plots").append(plot_html);
 
