@@ -187,6 +187,7 @@
 
         parameters_blocks = {};
         parameters_names = [];
+        document.getElementById("parameters").innerHTML = "";
     }
 
     function remove_chart(id) {
@@ -194,7 +195,7 @@
         delete graphics[id];
     }
 
-
+    my_charts = [];
     function generate_chart() {
         $.ajax(
             {
@@ -211,7 +212,7 @@
                         var plot_data = data[key];
                         var plot_html = `<div id="plotly-chart-${key}" class="pc ${grid ? "col-md-6" : ""} col-sm-12"></div>`;
                         $("#plots").append(plot_html);
-                        Plotly.newPlot("plotly-chart-" + key, [plot_data].data, plot_data.layout);
+                        my_charts.push(Plotly.newPlot("plotly-chart-" + key, [plot_data].data, plot_data.layout));
                     }
                 }
             }
