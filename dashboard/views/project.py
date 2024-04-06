@@ -149,6 +149,6 @@ class ProjectChartFormView(LoginRequiredMixin, DetailView):
             fig = go.Figure(data=traces, layout=layout)
 
             # Converter a figura para JSON para ser exibida na página da web
-            response[chart_id] = fig.to_json())
+            response[chart_id] = fig.to_json()
 
         return JsonResponse(response)
