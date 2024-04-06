@@ -208,7 +208,7 @@
                 success: function (data) {
                     $("#plots").html("");
                     for (var key in data) {
-                        var plot_data = JSON.parse(data[key]);
+                        var plot_data =  JSON.parse(JSON.parse(data[key])[0]);
                         var plot_html = `<div id="plotly-chart-${key}" class="pc ${grid ? "col-md-6" : ""} col-sm-12"></div>`;
                         $("#plots").append(plot_html);
 
