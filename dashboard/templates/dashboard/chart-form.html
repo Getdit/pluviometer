@@ -208,16 +208,9 @@
                 success: function (data) {
                     $("#plots").html("");
                     for (var key in data) {
-                        var plot_data =  JSON.parse(JSON.parse(data[key])[0]);
+                        var plot_data =  JSON.parse(data[key]);
                         var plot_html = `<div id="plotly-chart-${key}" class="pc ${grid ? "col-md-6" : ""} col-sm-12"></div>`;
                         $("#plots").append(plot_html);
-
-                        console.log(plot_data.data);
-                        console.log("-----------------------");
-                        console.log(plot_data.layout);console.log(plot_data.data);
-                        console.log("-----------------------");
-                        console.log(plot_data);
-                        console.log("-----------------------");
                         my_charts.push(plot_data);
                         Plotly.newPlot("plotly-chart-" + key, plot_data.data, plot_data.layout);
                     }
