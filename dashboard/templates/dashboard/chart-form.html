@@ -64,11 +64,11 @@
             <div id="charts" class="row"></div>
 
             <article class="col-3 mt-3">
-                <button id="generate_button" onclick="generate_chart()" class="btn btn-success mt-3">Gerar gráficos</button>
+                <button id="generate_button" onclick="disable_gen_button();generate_chart();enable_gen_button();" class="btn btn-success mt-3">Gerar gráficos</button>
             </article>
 
             <article class="col-3 mt-3 offset-9">
-                <button onclick="toggle_mode()" class="btn btn-success mt-3">Visualização</button>
+                <button onclick="disable_gen_button();toggle_mode();enable_gen_button();" class="btn btn-success mt-3">Visualização</button>
             </article>
         </div>
         <div id="plots" class="row">
@@ -207,7 +207,6 @@
     }
 
     function generate_chart() {
-        disable_gen_button();
         $.ajax(
             {
                 url: "{% url 'dashboard:project_chart_detail' pk=object.id %}",
@@ -228,7 +227,6 @@
                 }
             }
         );
-        enable_gen_button();
 
     }
 
